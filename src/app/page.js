@@ -6,13 +6,13 @@ import Parrafo from "@/ui/Parrafo";
 
 export default function Home() {
   return (
-    <main className="flex flex-col w-full items-center ">
+    <main className="flex flex-col h- w-full items-center ">
 
       <Seccion className={''}>
         <Titulo
           texto={'Materiales permitidos'}
         />
-        <Parrafo clas={'text-center'}>
+        <Parrafo className={'text-center'}>
           Observa un poco de los materiales a los que Boricue les da soporte en nuestra pagina web
         </Parrafo>
 
