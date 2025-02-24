@@ -2,7 +2,7 @@ import Image from "next/image"
 
 const BlogCard = ({ title, description, imageUrl }) => {
   return (
-    <div className=" max-w-sm flex flex-col w-auto items-center overflow-hidden rounded md:w-[33%] shadow-lg bg-fondo transition-transform duration-300 ease-in-out hover:scale-105">
+    <div className="flex flex-col w-96 md:w-[33%] h-80 items-center  rounded  shadow-lg bg-fondo transition-transform duration-300 ease-in-out hover:scale-105">
       <div className="relative h-48 w-full">
         {imageUrl && (
           <Image

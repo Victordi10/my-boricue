@@ -1,14 +1,14 @@
 import React from 'react';
 import { motion } from "framer-motion"
 
-const Parrafo = ({ children, clas, color }) => {
+const Parrafo = ({ children, clas, color, textAlign  }) => {
     return (
         <p
             className={`text-gray-500 leading-relaxed 
-                mb-4 text-justify text-sm md:text-base
+                mb-4 text-sm sm:text-base md:text-lg lg:text-xl
                 transition-all duration-300 ease-in-out 
                 hover:text-black ${clas}`}
-            style={{color: color}}
+            style={{color: color, textAlign: textAlign}}
         >
             {children}
         </p>

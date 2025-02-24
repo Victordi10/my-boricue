@@ -3,12 +3,33 @@ import Seccion from "@/ui/Seccion";
 import BlogCard from "@/ui/BlogCard";
 import Titulo from "@/ui/Titulo";
 import Parrafo from "@/ui/Parrafo";
+import ImageSliderWithText from "@/ui/ImageSliderWithText";
 
 export default function Home() {
+  const slides = [
+    {
+      image: "/ResiduosReciclabes3.jpg",
+      title: "Reciclaje Sostenible",
+      description: "Transformando el futuro a través de prácticas sostenibles",
+    },
+    {
+      image: "/ResiduosReciclabes1.jpeg",
+      title: "Economía Circular",
+      description: "Creando un ciclo de reutilización responsable",
+    },
+    {
+      image: "/ResiduosReciclabes2.jpg",
+      title: "Impacto Ambiental",
+      description: "Reduciendo nuestra huella ecológica día a día",
+    },
+  ]
   return (
     <main className="flex flex-col w-full items-center ">
 
-      <Seccion className={''}>
+      <ImageSliderWithText slides={slides} />
+
+
+      <Seccion className={'space-x-0'}>
         <Titulo
           texto={'Materiales permitidos'}
         />
@@ -16,7 +37,8 @@ export default function Home() {
           Observa un poco de los materiales a los que Boricue les da soporte en nuestra pagina web
         </Parrafo>
 
-        <div className="w-full flex space-x-6 space-y-6  items-center flex-col sm:flex-row">
+
+        <div className="w-full flex md:space-x-6 space-y-6 justify-center  items-center flex-col md:flex-row">
           <BlogCard
             title={'Carton'}
             description={'Carton en buen estado, sin haber sido usado anteriormente.'}
@@ -33,7 +55,6 @@ export default function Home() {
             imageUrl={'/Cuero.jpeg'}
           />
         </div>
-
       </Seccion>
 
     </main>
