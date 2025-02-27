@@ -8,9 +8,7 @@ import TrustSection from "./components/ui/TrustSection";
 
 export default function Acerca() {
   return (
-    <main className="flex flex-col w-full items-center ">
-
-
+    <>
       <Seccion>
         {/* Título centrado */}
         <Titulo texto="NOSOTROS SOMOS BORICUE" />
@@ -46,11 +44,11 @@ export default function Acerca() {
 
       <TrustSection />
 
-      
+
 
       <TeamSection />
 
 
-    </main>
+    </>
   );
 }

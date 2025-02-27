@@ -11,7 +11,6 @@ const Header = () => {
     const menuItems = [
     { name: "Acerca de", href: "/acerca" },
     { name: "Servicios", href: "/servicios" },
-    { name: "Contactanos", href: "/contactanos" },
     { name: "Preguntas", href: "/preguntas" },
     { name: "Aplicacion boricue", href: "/login" },
 ]

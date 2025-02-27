@@ -1,9 +1,13 @@
+'use client';
+
+import React, { useState } from "react";
 import Image from "next/image";
 import Seccion from "@/ui/Seccion";
 import MaterialCard from "@/ui/Card";
 import Titulo from "@/ui/Titulo";
 import Parrafo from "@/ui/Parrafo";
-import ImageSliderWithText from "@/ui/ImageSliderWithText";
+import CoverHero from "@/ui/CoverHero";
+import ContactSection from "@/ui/ContactSection";
 
 export default function Home() {
   const slides = [
@@ -24,16 +28,15 @@ export default function Home() {
     },
   ]
   return (
-    <main className="flex flex-col h- w-full items-center ">
-
-      <ImageSliderWithText slides={slides} />
+    <>
+      <CoverHero slides={slides} />
 
 
       <Seccion className={'space-x-0'}>
         <Titulo
           texto={'Materiales permitidos'}
         />
-        <Parrafo className={'text-center'}>
+        <Parrafo className={'text-center'} style={{textAlign: 'center'}} >
           Observa un poco de los materiales a los que Boricue les da soporte en nuestra pagina web
         </Parrafo>
 
@@ -57,7 +60,9 @@ export default function Home() {
         </div>
       </Seccion>
 
-    </main>
+      <ContactSection />
+
+    </>
 
   );
 }
