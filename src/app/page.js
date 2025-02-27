@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Seccion from "@/ui/Seccion";
-import BlogCard from "@/ui/BlogCard";
+import MaterialCard from "@/ui/Card";
 import Titulo from "@/ui/Titulo";
 import Parrafo from "@/ui/Parrafo";
 import ImageSliderWithText from "@/ui/ImageSliderWithText";
@@ -39,17 +39,17 @@ export default function Home() {
 
 
         <div className="w-full flex md:space-x-6 space-y-6 justify-center  items-center flex-col md:flex-row">
-          <BlogCard
+          <MaterialCard
             title={'Carton'}
             description={'Carton en buen estado, sin haber sido usado anteriormente.'}
             imageUrl={'/Carton.jpg'}
           />
-          <BlogCard
+          <MaterialCard
             title={'Aluminio'}
             description={'En todas sus presentaciones, latas, papel, todos los tipos son aceptados.'}
             imageUrl={'/Aluminio.jpg'}
           />
-          <BlogCard
+          <MaterialCard
             title={'Cuero'}
             description={'Recortes de cuero, trozos de cuero o elementos de cuero que ya no sean de uso.'}
             imageUrl={'/Cuero.jpeg'}

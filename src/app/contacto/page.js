@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Seccion from "@/ui/Seccion";
-import BlogCard from "@/ui/BlogCard";
+import BlogCard from "@/ui/Card";
 import Titulo from "@/ui/Titulo";
 import Parrafo from "@/ui/Parrafo";
 import ImageSliderWithText from "@/ui/ImageSliderWithText";

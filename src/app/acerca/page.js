@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Seccion from "@/ui/Seccion";
-import BlogCard, { BlogText } from "@/ui/BlogCard";
+import BlogCard, { BlogText } from "@/ui/Card";
 import Titulo from "@/ui/Titulo";
 import Parrafo from "@/ui/Parrafo";
 import TeamSection from "./components/ui/TeamSection";
+import TrustSection from "./components/ui/TrustSection";
 
 export default function Acerca() {
   return (
@@ -43,14 +44,9 @@ export default function Acerca() {
         </div>
       </Seccion>
 
+      <TrustSection />
 
-      <Seccion className={'sm:flex-row'}>
-        <BlogText title={'SOMOS CONFIABLES'} description={'Boricue en ningún momento comprometerá tu información o la usará para otros asuntos.'} />
-
-        <BlogText title={'SOMOS PROFECIONALES'} description={'Entendemos las necesidades de nuestros usuarios usuarios y más aun de la economia actual y ofrecemos una solucion.'} />
-
-        <BlogText title={'SOMOS BORICUE'} description={'Pero mas allá de todo, somos tu plataforma en linea confiable para comunicarte entre usuarios y empresas y contribuir a un nuevo modelo economico.'} />
-      </Seccion>
+      
 
       <TeamSection />
 
