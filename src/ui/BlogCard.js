@@ -24,3 +24,13 @@ const BlogCard = ({ title, description, imageUrl }) => {
 
 export default BlogCard
 
+const BlogText = ({ title, description }) => {
+  return (
+    <div className="max-w-sm flex flex-col w-auto items-center overflow-hidden rounded md:w-[33%] shadow-lg bg-fondo p-6 transition-transform duration-300 ease-in-out hover:scale-105">
+      <h3 className="font-bold text-xl mb-2 text-gray-800 text-center">{title}</h3>
+      <p className="text-gray-600 text-base text-center">{description}</p>
+    </div>
+  );
+};
+
+export { BlogText };
