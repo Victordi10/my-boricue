@@ -25,7 +25,7 @@ return (
             {/* Desktop Menu */}
             <nav className=" hidden  md:flex bg-fondo p-2 w-[75%] items-center justify-center space-x-6">
                 {menuItems.map((item) => (
-                    <Link key={item.name} href={item.href} className=" hover:text-dos text-texto font-semibold text-xl transition-all duration-300 ease-in-out relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-Botones after:transition-all after:duration-300 hover:after:w-full">
+                    <Link key={item.name} href={item.href} className=" hover:text-dos text-texto font-semibold text-lg transition-all duration-300 ease-in-out relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-Botones after:transition-all after:duration-300 hover:after:w-full">
                         {item.name}
                     </Link>
                 ))}
