@@ -20,16 +20,21 @@ export default function Preguntas() {
         </Seccion>
 
         <Seccion className={'sm:flex-row'}>
-    <div className="w-full flex flex-col space-y-6 justify-center items-center">
+    <div className="w-full flex flex-wrap justify-center gap-6">
     <BlogPregunta                    
         imageUrl={'/PestañaPreguntas1.jpg'}
-        title={'¿Quiénes pueden publicar materiales?'}
+        title={'¿QUIÉNES PUEDEN PUBLICAR MATERIALES?'}
         description={'Todos los usuarios pueden publicar sus productos y materiales, ya sean una persona natural o una empresa, todos son aceptados en Boricue.'}
     />
     <BlogPregunta
-        imageUrl={'/PestañaPreguntas2.jpg'}
-        title={'¿Qué materiales son aceptados?'}
+        imageUrl={'/Preguntas2.jpeg'}
+        title={'¿QUÉ MATERIALES SON PERMITIDOS?'}
         description={'Boricue presta soporte a varios tipos de materiales, entre los cuales se pueden encontrar el cuero, cobre, hierro, plástico y aluminio. Si no encuentras un material que posees, puedes avisarnos para añadirlo o puedes seleccionar la opción de otro.'}
+    />
+        <BlogPregunta
+        imageUrl={'/Preguntas3.jpeg'}
+        title={'¿QUÉ BENEFICIOS OBTENGO AL USAR BORICUE?'}
+        description={'Al utilizar Boricue, contribuyes activamente a la sostenibilidad t reduccion de residuos, Además, tienes la oportunidad de colaborar con otros usuarios, encontrar materiales valiosos para tus proyectos y promover prácticas ambientalmente responsables.'}
     />
     </div>
 </Seccion>
