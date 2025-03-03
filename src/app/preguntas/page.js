@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Seccion from "@/ui/Seccion";
-import BlogCard, { BlogInfo }  from "@/ui/BlogCard";
+import BlogCard, { BlogInfo, BlogPregunta }  from "@/ui/BlogCard";
 import Titulo from "@/ui/Titulo";
 import Parrafo from "@/ui/Parrafo";
 import ImageSliderWithText from "@/ui/ImageSliderWithText";
@@ -20,19 +20,20 @@ export default function Preguntas() {
         </Seccion>
 
         <Seccion className={'sm:flex-row'}>
-            <div className="w-full flex flex-col space-y-6 justify-center items-center">
-                <BlogInfo                    
-                imageUrl={'/PestañaPreguntas1.jpg'}
-                title={'¿Quienes pueden publicar materiales?'}
-                description={'Todos los usuarios pueden publicar sus productos y materiales, ya sean una persona natural o una empresa, todos son aceptados en Boricue'}
-                />
-                <BlogInfo
-                imageUrl={'/Preguntas2.jpeg'}
-                title={'¿QUE MATERIALES SON ACEPTADOS?'}
-                description={'Boricue presta soporte a varios tipos de materiales, entre los cuales se pueden encontrar el cuero, cobre, hierro, plastico y aluminio. Si no encuentras un material que posees, puedes avisarnos para añadirlo o puedes seleccionar la opcion de otro'}/>
+    <div className="w-full flex flex-col space-y-6 justify-center items-center">
+    <BlogPregunta                    
+        imageUrl={'/PestañaPreguntas1.jpg'}
+        title={'¿Quiénes pueden publicar materiales?'}
+        description={'Todos los usuarios pueden publicar sus productos y materiales, ya sean una persona natural o una empresa, todos son aceptados en Boricue.'}
+    />
+    <BlogPregunta
+        imageUrl={'/PestañaPreguntas2.jpg'}
+        title={'¿Qué materiales son aceptados?'}
+        description={'Boricue presta soporte a varios tipos de materiales, entre los cuales se pueden encontrar el cuero, cobre, hierro, plástico y aluminio. Si no encuentras un material que posees, puedes avisarnos para añadirlo o puedes seleccionar la opción de otro.'}
+    />
+    </div>
+</Seccion>
 
-            </div>
-        </Seccion>
     </main>
-  );
+);
 }

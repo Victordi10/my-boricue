@@ -1,4 +1,7 @@
+'use client'
 import Image from "next/image"
+import { ChevronDown, ChevronUp } from "lucide-react";
+import React, { useState } from "react";
 
 const BlogCard = ({ title, description, imageUrl }) => {
   return (
@@ -58,3 +61,35 @@ const BlogInfo = ({ title, description, imageUrl }) => {
 };
 
 export { BlogInfo };
+
+
+{/*preguntas*/}
+const BlogPregunta = ({ title, description, imageUrl }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="max-w-sm flex flex-col w-auto items-center overflow-hidden rounded md:w-[33%] shadow-lg bg-fondo transition-transform duration-300 ease-in-out hover:scale-105">
+      <div className="relative h-48 w-full">
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt={title}
+            layout="fill"
+            objectFit="cover"
+            className="transition-opacity duration-300 ease-in-out hover:opacity-75"
+          />
+        )}
+      </div>
+      <div className="px-6 py-4 text-center" onClick={() => setIsOpen(!isOpen)}>
+        <div className="flex justify-between items-center w-full">
+          <h3 className="font-bold text-xl mb-2 text-gray-800">{title}</h3>
+          {isOpen ? <ChevronUp /> : <ChevronDown />}
+        </div>
+        {isOpen && <p className="text-gray-600 text-base mt-2">{description}</p>}
+      </div>
+    </div>
+  );
+};
+
+export { BlogPregunta };
+
