@@ -6,7 +6,7 @@ import Titulo from "./Titulo"
 import Parrafo from "./Parrafo"
 import Boton from "@/components/Boton"
 
-const ImageSliderWithText = ({slides}) => {
+const CoverHero = ({slides}) => {
     // Estados
     const [currentSlide, setCurrentSlide] = useState(0)
     const [isPlaying, setIsPlaying] = useState(true)
@@ -115,5 +115,5 @@ const ImageSliderWithText = ({slides}) => {
     )
 }
 
-export default ImageSliderWithText
+export default CoverHero
 

@@ -30,7 +30,9 @@ export default function RootLayout({ children }) {
         className={`${dosis.variable} ${poppins.variable} antialiased`}
       >
         <Header />
-        {children}
+        <main className="flex flex-col mb-8 w-full items-center ">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

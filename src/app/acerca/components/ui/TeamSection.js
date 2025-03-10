@@ -1,4 +1,7 @@
 import { Facebook, Twitter, Linkedin, Instagram, Plus } from "lucide-react"
+import Seccion from "@/ui/Seccion"
+import Titulo from "@/ui/Titulo"
+import Parrafo from "@/ui/Parrafo"
 
 const TeamMember = ({ name, role, description, image }) => {
     return (
@@ -7,7 +10,7 @@ const TeamMember = ({ name, role, description, image }) => {
             <div className="relative overflow-hidden">
                 <div className="aspect-square">
                     <img
-                        src={image || "/placeholder.svg"}
+                        src={image || "/Sena.jpe"}
                         alt={name}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
@@ -39,12 +42,12 @@ const TeamMember = ({ name, role, description, image }) => {
 
                 {/* Descripción */}
                 <div className="relative">
-                    <p className="text-center text-gray-600 leading-relaxed">{description}</p>
-                    <div className="absolute -right-2 -top-2">
+                    <Parrafo className="text-center text-gray-600 leading-relaxed">{description}</Parrafo>
+                    {/*  <div className="absolute -right-2 -top-2">
                         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-600">
                             <Plus className="h-5 w-5" />
                         </span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
@@ -57,34 +60,31 @@ const TeamSection = () => {
             name: "Sena",
             role: "Desarrollador",
             description: "El SENA es el encargado principal de este sitio web y al que se le atribuye toda esta plataforma.",
-            image: "/placeholder.svg?height=400&width=400",
+            image: "/Sena.jpg",
         },
         {
             name: "Sena",
             role: "Administrador",
             description: "El SENA es el encargado principal de administrar los usuarios y empresas dentro de la plataforma.",
-            image: "/placeholder.svg?height=400&width=400",
+            image: "/Sena.jpg",
         },
         {
             name: "Sena",
             role: "Asistente",
             description: "El SENA es el encargado principal de brindarle asistencia a los usuarios y empresas.",
-            image: "/placeholder.svg?height=400&width=400",
+            image: "/Sena.jpg",
         },
     ]
 
     return (
-        <section className="py-16 bg-gradient-to-br from-green-50 to-green-100">
+        <Seccion className="py-16 bg-gradient-to-br from-fondo via-fondo to-uno mb-10">
             <div className="container mx-auto px-4">
                 {/* Encabezado */}
-                <div className="mb-12 text-center">
-                    <h2 className="relative inline-block text-4xl font-bold text-gray-800 mb-4">
-                        Conoce Nuestro Equipo
-                        <div className="absolute -bottom-2 left-0 h-1 w-full bg-green-500"></div>
-                    </h2>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
+                <div className="mb-12 text-center flex flex-col items-center">
+                    <Titulo className=" border-b-4 border-dos mb-4 w-80" texto={'NUESTRO EQUIPO'} />
+                    <Parrafo className="text-gray-600 max-w-2xl mx-auto">
                         Un equipo comprometido con la innovación y el desarrollo sostenible
-                    </p>
+                    </Parrafo>
                 </div>
 
                 {/* Grid de miembros del equipo */}
@@ -94,7 +94,7 @@ const TeamSection = () => {
                     ))}
                 </div>
             </div>
-        </section>
+        </Seccion>
     )
 }
 
