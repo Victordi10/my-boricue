@@ -19,7 +19,7 @@ return (
     <header className="bg-uno sticky top-0 z-40 w-full text-Textos">
         <div className=" p-2 container w-full mx-auto flex justify-between items-center">
             <Link href="/" className="text-texto text-2xl font-bold flex items-center">
-                <Image src={'/LogoBoricueCircular.png'} width={90} height={90} className="mr-2" />
+                <Image src={'/LogoBoricueCircular.png'} width={85} height={85} className="mr-2" />
             </Link>
             {/* Desktop Menu */}
             <nav className=" hidden  md:flex bg-fondo p-2 w-[75%] items-center justify-center space-x-6">
@@ -33,7 +33,7 @@ return (
             {/* Mobile Menu Button */}
             <button className={`md:hidden ${!isOpen ? 'text-texto' : 'text-dos'} focus:outline-none`} onClick={() => setIsOpen(!isOpen)}>
                 <svg
-                    className="w-6 h-6"
+                    className="w-8 h-8"
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"

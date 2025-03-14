@@ -41,7 +41,7 @@ export default function Home() {
         </Parrafo>
 
 
-        <div className="w-full flex md:space-x-6 space-y-6 justify-center  items-center flex-col md:flex-row">
+        <div className="w-full px-2 flex md:space-x-6 space-y-6 justify-center items-center flex-col md:flex-row">
           <MaterialCard
             title={'Carton'}
             description={'Carton en buen estado, sin haber sido usado anteriormente.'}

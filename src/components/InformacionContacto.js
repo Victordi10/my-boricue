@@ -7,7 +7,7 @@ import Parrafo from "@/ui/Parrafo"
 
 const InformacionContacto = () => {
     return (
-        <div className="bg-white rounded-2xl shadow-xl md:shadow-none p-8 w.full md:w-1/2">
+        <div className="bg-white rounded-2xl shadow-xl md:shadow-none p-8 w-full md:w-1/2">
             <h2 className="text-3xl font-bold md:hidden text-gray-800 mb-2">Información de Contacto</h2>
 
             <div className="space-y-4">

@@ -47,7 +47,7 @@ const CoverHero = ({slides}) => {
     }, [isPlaying, nextSlide])
 
     return (
-        <div className="relative h-[85vh] max-h-[800px] min-h-fit w-full overflow-hidden group">
+        <div className="relative h-[80vh] max-h-[800px] min-h-fit w-full overflow-hidden group">
             {/* Contenedor de slides */}
             <div className="relative h-full w-full">
                 {slides.map((slide, index) => (

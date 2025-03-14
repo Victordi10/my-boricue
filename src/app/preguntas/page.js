@@ -25,7 +25,7 @@ const PreguntaItem = ({ title, description, imageUrl }) => {
             {isOpen && (
                 <div className="flex flex-col md:flex-row items-center p-4 bg-white shadow-md">
                     {imageUrl && (
-                        <div className="relative w-32 h-32 md:w-48 md:h-48 flex-shrink-0">
+                        <div className="relative md:w-56 md:h-56 w-48 h-48 flex-shrink-0">
                             <Image
                                 src={imageUrl}
                                 alt={title}

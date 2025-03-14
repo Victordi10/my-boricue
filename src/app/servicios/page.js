@@ -51,7 +51,7 @@ export default function Servicios() {
 
   return (
     <Seccion className="bg-gradient-to-br from-fondo  via-fondo to-uno">
-      <div className="container mx-auto px-4">
+      <div className="container md:mx-auto md:px-4">
         {/* Encabezado de la sección */}
         <div className="max-w-2xl mb-12 relative">
           <div className="absolute left-0 top-0 h-full w-2 bg-green-600"></div>

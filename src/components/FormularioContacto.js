@@ -6,7 +6,7 @@ import Parrafo from "@/ui/Parrafo"
 
 const FormularioContacto = ({ formData, handleChange, handleSubmit, isSubmitting }) => {
     return (
-        <div className=" rounded-2xl p-8 md:w-1/2">
+        <div className=" rounded-2xl p-8 w-full md:w-1/2">
             <Titulo className="text-3xl font-bold text-gray-800 mb-2" texto={'Contáctanos'} style={{ textAlign: 'left' }} />
             <Parrafo className="text-gray-600 mb-8">
                 Si tienes alguna duda, problema o sugerencia, llena este formulario y nosotros te contactaremos.
