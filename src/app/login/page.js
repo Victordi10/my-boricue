@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { UserPlus, LogIn } from 'lucide-react'
 
-import SignIn from './components/SignIn.js'
-import SignUp from './components/SignUp.js'
+import SignIn from './SignIn.js'
+import SignUp from './SignUp.js'
 
 const Login = () => {
     const [renderizar, setRenderizar] = useState('SignIn')

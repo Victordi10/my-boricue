@@ -1,25 +1,17 @@
 import Joi from 'joi';
+import { NextResponse } from "next/server";
 
 //muestro en la consola donde estuvo el error
-export const mostrarError = (donde, err)=>{
-    console.error('Ocurrio un error en: ',donde + ' ' + err)
+export const mostrarError = (donde, err) => {
+    console.error(`Ocurrió un error en ${donde}: ${err.message}`);
+};
+
+export function errorResponse(message, statusCode = 500) {
+    return NextResponse.json({ success: false, message }, { status: statusCode });
 }
 
-//envio respuesta al cliente si hubo error
-export function errorResponse(res, statusCode, message) {
-    res.status(statusCode).json({
-        success: false,
-        message,
-    });
-}
-
-//funcion para enviar una respuesta
-export function successResponse(res, data, message = 'Operación exitosa') {
-    res.status(200).json({
-        success: true,
-        message,
-        data,
-    });
+export function successResponse(message = "Operación exitosa", data = {}) {
+    return NextResponse.json({ success: true, message, data }, { status: 200 });
 }
 
 //funcion para validar datos
