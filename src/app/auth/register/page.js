@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { UserPlus, LogIn } from 'lucide-react'
 
-import SignIn from '../login/SignIn.js'
 import SignUp from './SignUp.js'
 
 const Register = () => {
+    const [error, setError] = useState('')
+
 
     return (
         <div className="min-h-screen w-full bg-[url('/bosque.jpg')] bg-cover bg-center py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
@@ -18,8 +19,7 @@ const Register = () => {
                     <motion.div
                         className="w-full"
                     >
-
-                        <SignUp />
+                        <SignUp setError={setError}/>
                     </motion.div>
                 </AnimatePresence>
             </div>

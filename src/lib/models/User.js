@@ -5,8 +5,8 @@ import Register from "@/app/auth/register/page";
 // Obtener usuario por correo
 export async function getUserByEmail(email) {
     try {
-        const sql = "SELECT idUsuario, contrasena FROM usuarios WHERE correo = ?";
-        const [results] = await db(sql, [email]);  // Aquí ejecutamos la consulta
+        const sql = "SELECT idUsuario, contrasena, correo FROM usuarios WHERE correo = ?";
+        const results = await db(sql, [email]);  // Aquí ejecutamos la consulta
 
         // Si no encontramos el usuario, retornamos null
         return results.length > 0 ? results[0] : null;
@@ -22,6 +22,7 @@ export async function registrarUser(mail, pass, names, dress, phon, rol, iden) {
     try {
         // Verificar si el correo ya existe
         const existingUser = await getUserByEmail(mail);
+        console.log('user', existingUser)
         if (existingUser) {
             throw new Error('El correo ya está registrado');
         }

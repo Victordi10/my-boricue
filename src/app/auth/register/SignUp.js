@@ -5,7 +5,7 @@ import { User, MapPin, Phone, Mail, Lock, UserCircle, Building, ChevronLeft, Che
 import Link from "next/link"
 import api from "@/services/axiosInstance"
 
-const SignUp = ({ setRenderizar }) => {
+const SignUp = ({  }) => {
     const [formData, setFormData] = useState({
         iden: "",
         names: "",
@@ -19,6 +19,8 @@ const SignUp = ({ setRenderizar }) => {
     const [currentStep, setCurrentStep] = useState(1)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formErrors, setFormErrors] = useState({})
+    const [mensaje, setMensaje] = useState('')
+    const [isError, setIsError] = useState(false)
 
     const totalSteps = 3
 
@@ -99,20 +101,38 @@ const SignUp = ({ setRenderizar }) => {
         }
 
         setIsSubmitting(true)
+        setIsError(false)
 
         try {
             // Aquí iría la lógica real de envío al endpoint /register
             const response = await api.post('/api/auth/register', formData)
+            const data = response.data
 
-            if (response.ok) {
-                // Manejar respuesta exitosa
-                console.log("Registro exitoso")
+            if (data.success && data.data.token) {
+                localStorage.setItem("token", data.data.token); // Guardar el token en localStorage
+                //window.location.href = "/dashboard"; 
+                setMensaje("Registro exitoso")
             } else {
                 // Manejar error
+                setMensaje('Ocurrio un error inesperado')
                 console.error("Error en el registro")
             }
         } catch (error) {
             console.error("Error:", error)
+            setIsError(true)
+            if (error.response) {
+                // El backend respondió con un código de estado fuera del rango 2xx
+                console.error("Error en la respuesta del servidor:", error.response.data);
+                setMensaje(error.response.data.message || "Ocurrió un error inesperado");
+            } else if (error.request) {
+                // La solicitud fue hecha pero no hubo respuesta
+                console.error("No hubo respuesta del servidor:", error.request);
+                setMensaje("No se recibió respuesta del servidor. Intenta nuevamente.");
+            } else {
+                // Algo pasó al configurar la petición
+                console.error("Error al configurar la solicitud:", error.message);
+                setMensaje("Hubo un problema al realizar el registro.");
+            }
         } finally {
             setIsSubmitting(false)
         }
@@ -310,10 +330,10 @@ const SignUp = ({ setRenderizar }) => {
                         <div key={index} className="flex items-center">
                             <div
                                 className={`flex items-center justify-center w-8 h-8 rounded-full transition-colors ${currentStep > index + 1
-                                        ? 'bg-green-500 text-white'
-                                        : currentStep === index + 1
-                                            ? 'bg-dos text-white'
-                                            : 'bg-gray-200 text-gray-600'
+                                    ? 'bg-green-500 text-white'
+                                    : currentStep === index + 1
+                                        ? 'bg-dos text-white'
+                                        : 'bg-gray-200 text-gray-600'
                                     }`}
                             >
                                 {currentStep > index + 1 ? (
@@ -386,6 +406,10 @@ const SignUp = ({ setRenderizar }) => {
                         </button>
                     )}
                 </div>
+
+                {mensaje !== '' && (
+                    <p className={`text-lg ${isError ? 'text-red-600' : 'text-gray-700'}`}>{mensaje}</p>
+                )}
 
                 <div className="text-center text-sm text-gray-500 mt-8 pt-4 border-t border-gray-200">
                     ¿Ya tienes una cuenta?{" "}
