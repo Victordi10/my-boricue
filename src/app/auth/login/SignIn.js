@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Mail, Lock, LogIn } from "lucide-react";
 import api from "@/services/axiosInstance";
+import Link from "next/link";
 
-const SignIn = ({ setRenderizar }) => {
+const SignIn = ({ }) => {
     const [formData, setFormData] = useState({
         mail: "",
         pass: "",
@@ -27,7 +28,7 @@ const SignIn = ({ setRenderizar }) => {
         setErrorMessage("");
 
         try {
-            const response = await api.post("/login", formData);
+            const response = await api.post("/api/auth/login", formData);
 
             if (response.data.token) {
                 localStorage.setItem("token", response.data.token); // Guardar el token en localStorage
@@ -113,13 +114,12 @@ const SignIn = ({ setRenderizar }) => {
 
                 <div className="text-center text-sm text-gray-500 mt-4 pt-4 border-t border-gray-200">
                     ¿No tienes una cuenta?{" "}
-                    <button
-                        type="button"
-                        onClick={() => setRenderizar("SignUp")}
+                    <Link
+                        href="/auth/register"
                         className="font-medium text-dos hover:text-dos transition-colors"
                     >
                         Regístrate
-                    </button>
+                    </Link>
                 </div>
             </form>
         </div>

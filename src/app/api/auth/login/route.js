@@ -1,31 +1,35 @@
-import { loginUser } from "@/lib/controllers/authController";
-import { errorResponse, successResponse } from "@/utils/handler";
+import { NextResponse } from 'next/server';
+import { getUserByEmail, verificarPassword } from '@/lib/models/User';
+import jwt from 'jsonwebtoken';
+import { errorResponse, successResponse } from '@/utils/handler';
 
+// Ruta POST para login
 export async function POST(req) {
     try {
         const { mail, pass } = await req.json();
+        console.log(mail, pass )
 
         if (!mail || !pass) {
-            return errorResponse("Ingrese usuario y contraseña", 400);
+            return errorResponse('Email y contraseña son requeridos', 400);
         }
 
-        const { token, userId, error } = await loginUser(mail, pass);
-
-        if (error) {
-            return errorResponse(error, 401);
+        const user = await getUserByEmail(mail);
+        if (!user) {
+            return errorResponse('Usuario y/o contraseña incorrectos', 401);
         }
 
-        const response = successResponse("Inicio de sesión exitoso", { userId });
+        const isMatch = await verificarPassword(pass, user.contrasena);
+        if (!isMatch) {
+            return errorResponse('Usuario y/o contraseña incorrectos', 401);
+        }
 
-        response.cookies.set("jwt", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
+        const token = jwt.sign({ idUsuario: user.idUsuario }, process.env.JWT_SECRETO, {
+            expiresIn: process.env.JWT_TIEMPO_EXPIRA || '1h',
         });
 
-        return response;
+        return successResponse('Login exitoso', { token, userId: user.idUsuario });
     } catch (error) {
-        console.error("Error en la API de login:", error);
-        return errorResponse("Error interno del servidor", 500);
+        console.error('Error en loginUser:', error);
+        return errorResponse('Ocurrió un error al intentar iniciar sesión', 500);
     }
 }

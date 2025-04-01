@@ -2,22 +2,26 @@ import { getUserByEmail, verificarPassword } from "../models/User";
 import jwt from "jsonwebtoken";
 import { mostrarError, successResponse, errorResponse } from "../../utils/handler";
 
-export async function loginUser(email, password) {
+// Controlador de login
+export async function loginUser(req, res) {
     try {
+        const { email, password } = req.body; // Obtener datos del request
+        if (!email || !password) return errorResponse("Email y contraseña son requeridos", 400)
+
         const user = await getUserByEmail(email);
-        if (!user) return { error: "Usuario y/o contraseña incorrectos" };
+        if (!user) return errorResponse("Usuario y/o contraseña incorrectos", 401);
 
         const isMatch = await verificarPassword(password, user.contrasena);
-        if (!isMatch) return { error: "Usuario y/o contraseña incorrectos" };
+        if (!isMatch) return errorResponse("Usuario y/o contraseña incorrectos", 401);
 
         // Crear token JWT
         const token = jwt.sign({ idUsuario: user.idUsuario }, process.env.JWT_SECRETO, {
-            expiresIn: process.env.JWT_TIEMPO_EXPIRA,
+            expiresIn: process.env.JWT_TIEMPO_EXPIRA || "1h",
         });
 
-        return { token, userId: user.idUsuario };
+        return successResponse({ token, userId: user.idUsuario });
     } catch (error) {
         mostrarError("loginUser", error);
-        return { error: "Ocurrió un error al intentar iniciar sesión" };
+        return errorResponse("Ocurrió un error al intentar iniciar sesión", 500);
     }
 }
