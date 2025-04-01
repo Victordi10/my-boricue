@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Mail, Lock, LogIn } from "lucide-react";
 import api from "@/services/axiosInstance";
 import Link from "next/link";
+import ShowMensaje from "@/components/ShowMensaje";
 
 const SignIn = ({ }) => {
     const [formData, setFormData] = useState({
@@ -29,10 +30,12 @@ const SignIn = ({ }) => {
 
         try {
             const response = await api.post("/api/auth/login", formData);
+            const data = response.data;
 
-            if (response.data.token) {
+            if (data.data.token) {
                 localStorage.setItem("token", response.data.token); // Guardar el token en localStorage
-                window.location.href = "/dashboard"; // Redirigir al dashboard
+                //window.location.href = "/dashboard"; // Redirigir al dashboard
+                console.log('Inicio sesion')
             } else {
                 setErrorMessage("Error al iniciar sesión. Verifica tus credenciales.");
             }
@@ -91,11 +94,10 @@ const SignIn = ({ }) => {
                     </div>
                 </div>
 
-                {errorMessage && (
-                    <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                        <p className="text-sm text-red-700">{errorMessage}</p>
-                    </div>
-                )}
+                <ShowMensaje
+                    mensaje={errorMessage}
+                    isError={true}  // Agregar esta línea para mostrar el mensaje de error en color rojo
+                />
 
                 <div>
                     <button

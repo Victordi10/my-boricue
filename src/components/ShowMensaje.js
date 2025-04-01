@@ -1,9 +1,13 @@
 'use client'
 
-export default function ShowMensaje({ mensaje, isError }) {
+export default function ShowMensaje({ mensaje, isError = false }) {
     return (
-        <div className="flex flex-col items-center justify-center p-2 bg-red-100 rounded-lg border border-red-200 shadow-sm">
-            <p className={`text-lg ${isError ? 'text-red-600' : 'text-gray-700'}`}>{mensaje}</p>
-        </div>
+        <>
+            {mensaje && (
+                <div className={`border-l-4 ${isError ? 'bg-red-50  border-red-500' : 'text-gray-700 border-green-500'} p-4 rounded`}>
+                    <p className={`text-sm ${isError ? 'text-red-600' : 'text-gray-700'}`}>{mensaje}</p>
+                </div>
+            )}
+        </>
     );
 }
