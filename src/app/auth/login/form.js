@@ -5,8 +5,10 @@ import { Mail, Lock, LogIn } from "lucide-react";
 import api from "@/services/axiosInstance";
 import Link from "next/link";
 import ShowMensaje from "@/components/ShowMensaje";
+import { useRouter } from "next/navigation"; 
 
 const SignIn = ({ }) => {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         mail: "",
         pass: "",
@@ -34,7 +36,7 @@ const SignIn = ({ }) => {
 
             if (data.data.token) {
                 localStorage.setItem("token", response.data.token); // Guardar el token en localStorage
-                //window.location.href = "/dashboard"; // Redirigir al dashboard
+                router.replace("/dashboard"); // Redirigir al dashboard
                 console.log('Inicio sesion')
             } else {
                 setErrorMessage("Error al iniciar sesión. Verifica tus credenciales.");

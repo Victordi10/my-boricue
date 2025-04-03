@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { UserPlus, LogIn } from 'lucide-react'
 
-import SignIn from './SignIn.js'
-import SignUp from '../register/SignUp.js'
+import SignIn from './form.js'
+import SignUp from '../register/form.js'
 
 const Login = () => {
 

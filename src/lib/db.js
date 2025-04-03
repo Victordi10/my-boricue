@@ -16,6 +16,6 @@ export default async function db(sql, params) {
         const [results] = await pool.query(sql, params);
         return results;
     } catch (error) {
-        throw new Error(`Error en la consulta SQL: ${error.message}`);
+        throw new Error(`Error en la consulta SQL: ${error.message}, :`, error);
     }
 }

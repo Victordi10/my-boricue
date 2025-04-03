@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { UserPlus, LogIn } from 'lucide-react'
 
-import SignUp from './SignUp.js'
+import SignUp from './form.js'
 
 const Register = () => {
     const [error, setError] = useState('')

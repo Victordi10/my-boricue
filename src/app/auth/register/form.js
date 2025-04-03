@@ -4,8 +4,10 @@ import { useState } from "react"
 import { User, MapPin, Phone, Mail, Lock, UserCircle, Building, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import api from "@/services/axiosInstance"
+import { useRouter } from "next/navigation"
 
 const SignUp = ({  }) => {
+    const router = useRouter()
     const [formData, setFormData] = useState({
         iden: "",
         names: "",
@@ -110,7 +112,7 @@ const SignUp = ({  }) => {
 
             if (data.success && data.data.token) {
                 localStorage.setItem("token", data.data.token); // Guardar el token en localStorage
-                //window.location.href = "/dashboard"; 
+                router.replace('/dashboard')
                 setMensaje("Registro exitoso")
             } else {
                 // Manejar error
