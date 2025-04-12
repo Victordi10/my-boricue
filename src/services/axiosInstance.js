@@ -14,6 +14,7 @@ api.interceptors.request.use(
         if (typeof window !== "undefined") {
             const token = localStorage.getItem("token"); // Buscar el token en localStorage
             if (token) {
+                //console.log(token)
                 config.headers.Authorization = `Bearer ${token}`;
             }
         }

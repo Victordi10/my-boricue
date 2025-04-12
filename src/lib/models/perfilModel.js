@@ -2,7 +2,7 @@ import db from "../db";
 
 export const getUser = async (id) => {
     try {
-        const sql = 'SELECT nombres, direccion, urlImgPerfil, identificacion, direccion, telefono, correo, rol, contrasena FROM usuarios WHERE idUsuario = ?';
+        const sql = 'SELECT nombres, direccion, urlImgPerfil, identificacion, direccion, telefono, correo, rol FROM usuarios WHERE idUsuario = ?';
         const [results] = await db(sql, [id]);
         return results;
     } catch (error) {

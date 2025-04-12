@@ -9,6 +9,8 @@ import api from '@/services/axiosInstance';
 import ProductCard from '@/components/ProductCard';
 import { ErrorScreen, InlineMessage } from '@/components/ShowMensaje';
 import { useGlobalState } from '@/context/GlobalStateContext';
+import Titulo from '@/ui/Titulo';
+import Parrafo from '@/ui/Parrafo';
 
 
 const exampleProducts = [
@@ -82,8 +84,10 @@ export default function MisPublicaciones() {
         setLoading(true);
         try {
             const response = await api.get(`/api/dashboard/productos/${userId}`);
+            const data = response.data.data
+            console.log('productos', data)
 
-            setProducts(response.data.data);
+            setProducts(data);
 
             setError(null);
         } catch (err) {
@@ -96,8 +100,10 @@ export default function MisPublicaciones() {
 
     // Cargar productos al montar el componente
     useEffect(() => {
-        loadProducts();
-    }, []);
+        if (userId) {
+            loadProducts();
+        }
+    }, [userId]);
 
     // Función para eliminar producto
     const handleDeleteProduct = async (productId) => {
@@ -114,40 +120,24 @@ export default function MisPublicaciones() {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Encabezado con degradado */}
-            <div className="bg-gradient-to-r from-dos to-divisiones py-12 px-6">
+            <div className="bg-gradient-to-r from-dos to-divisiones p-6">
                 <div className="max-w-6xl mx-auto">
-                    <h1 className="text-3xl md:text-4xl font-bold text-white text-center">
-                        Mis Publicaciones
-                    </h1>
-                    <p className="text-white text-opacity-90 text-center mt-2 max-w-2xl mx-auto">
+                    <Parrafo clas="text-white text-opacity-90 text-center mt-2 max-w-2xl mx-auto">
                         Gestiona tus productos publicados en la plataforma y controla tus ventas
-                    </p>
+                    </Parrafo>
                 </div>
             </div>
 
             {/* Contenido principal */}
             <div className="max-w-6xl mx-auto py-8 px-4">
-                {/* Estadísticas/resumen */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <div className="bg-white p-5 rounded-xl shadow-sm">
-                        <h3 className="text-sm font-medium text-gray-500">Total publicaciones</h3>
-                        <p className="text-2xl font-bold text-gray-800 mt-1">{products.length}</p>
-                    </div>
-                    <div className="bg-white p-5 rounded-xl shadow-sm">
-                        <h3 className="text-sm font-medium text-gray-500">Visitas totales</h3>
-                        <p className="text-2xl font-bold text-gray-800 mt-1">342</p>
-                    </div>
-                    <div className="bg-white p-5 rounded-xl shadow-sm">
-                        <h3 className="text-sm font-medium text-gray-500">Ventas realizadas</h3>
-                        <p className="text-2xl font-bold text-gray-800 mt-1">12</p>
-                    </div>
-                </div>
-
                 {/* Filtros y botón de añadir */}
                 <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">
-                        Tus productos
-                    </h2>
+                    <div className="flex flex-col md:items-start items-center justify-center mb-4 md:mb-0">
+                        <h2 className="text-2xl font-bold text-gray-800 ">
+                            Tus productos
+                        </h2>
+                        <p className="text-sm text-gray-500">Total publicaciones: {products.length}</p>
+                    </div>
                     <Link
                         href="/crear-publicacion"
                         className="px-5 py-2 bg-dos text-white font-medium rounded-lg shadow-sm hover:bg-opacity-90 transition-colors flex items-center"

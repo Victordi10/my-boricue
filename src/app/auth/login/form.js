@@ -36,10 +36,10 @@ const SignIn = ({ }) => {
             const data = response.data;
 
             if (data.data.token) {
-                localStorage.setItem("token", response.data.token); // Guardar el token en localStorage
+                localStorage.setItem("token", data.data.token); // Guardar el token en localStorage
                 setUserId(data.data.userId)
                 router.replace(`/dashboard/dashboard`); // Redirigir al dashboard
-                console.log('Inicio sesion')
+                //console.log('Inicio sesion', data.data.token)
             } else {
                 setErrorMessage("Error al iniciar sesión. Verifica tus credenciales.");
             }

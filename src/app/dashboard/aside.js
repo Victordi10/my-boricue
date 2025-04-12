@@ -15,20 +15,22 @@ import {
 import Image from "next/image";
 import { useGlobalState } from '@/context/GlobalStateContext';
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Array con opciones de navegación para Boricue
 
 
 // Componente Aside
 export default function Aside() {
+    const router = useRouter()
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { userId, setUserId } = useGlobalState();
 
     const handleLogout = () => {
+        router.push('/auth/login');
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         setUserId(null);
-        router.push('/auth/login');
     };
 
 

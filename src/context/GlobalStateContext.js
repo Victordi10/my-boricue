@@ -23,7 +23,6 @@ export function GlobalStateProvider({ children }) {
         }
     }, [userId]);
 
-    console.log(userId)
 
     return (
         <GlobalStateContext.Provider value={{ userId, setUserId, theme, setTheme }}>

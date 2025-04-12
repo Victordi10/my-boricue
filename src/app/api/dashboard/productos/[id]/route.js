@@ -3,15 +3,16 @@ import { getProductosUser } from "@/lib/models/productosModel";
 import { authMiddleware } from "@/middleware/authMiddleware";
 
 
-const getHandler = async (req, context) => {
+const getHandler = async (req, {params}) => {
     try {
-        const userId = req.user.id; // 👈 token ya decodificado gracias al middleware
+        const userId = params.id; // 👈 token ya decodificado gracias al middleware
 
         if (!userId) {
             return errorResponse('No se pudo obtener el ID del usuario', 400);
         }
 
         const productos = await getProductosUser(userId);
+        console.log(productos)
 
         return successResponse('Productos cargados correctamente', productos);
     } catch (error) {

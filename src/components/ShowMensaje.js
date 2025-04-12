@@ -206,12 +206,12 @@ export function ErrorScreen({
                         </button>
                     )}
 
-                    <a
+                    {/* <a
                         href={homeLink}
                         className="inline-flex items-center justify-center px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100"
                     >
                         Volver al inicio
-                    </a>
+                    </a> */}
                 </div>
             </div>
         </div>

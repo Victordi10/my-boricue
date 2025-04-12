@@ -13,7 +13,8 @@ import {
     FileText,
     ArrowLeft,
     Calendar,
-    Building
+    IdCard,
+
 } from 'lucide-react';
 import Loader from '@/components/Loader';
 import { ErrorScreen, InlineMessage } from '@/components/ShowMensaje';
@@ -34,6 +35,7 @@ export default function Perfil() {
     console.log('perfil', userId)
 
     const getPerfil = async () => {
+        setError(false)
         setLoading(true);
         try {
             const response = await api.get(`/api/dashboard/perfil/${userId}`);
@@ -108,9 +110,9 @@ export default function Perfil() {
     };
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-        getPerfil();
+        if (userId) {
+            getPerfil();
+        }
     }, [userId]);
 
     if (loading) {
@@ -148,7 +150,7 @@ export default function Perfil() {
 
 
 
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-4xl md:mx-auto">
                 {/* Botón de volver y título */}
                 <div className="flex items-center mb-6">
                     <button
@@ -163,8 +165,8 @@ export default function Perfil() {
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                     {/* Encabezado con banner */}
                     <div className="relative bg-gradient-to-r from-dos to-divisiones h-48">
-                        <div className=" w-full p-6 bg-gradient-to-t from-black/20 to-transparent">
-                            <h1 className="text-3xl text-white font-bold">Perfil de {perfil?.rol}</h1>
+                        <div className=" w-full p-4 bg-gradient-to-t from-black/20 to-transparent">
+                            <h1 className="sm:text-3xl text-lg text-white font-bold">Perfil de {perfil?.rol}</h1>
                         </div>
                     </div>
 
@@ -172,14 +174,14 @@ export default function Perfil() {
                     {perfil ? (
                         <div className="p-4 relative">
                             {/* Avatar con posición absoluta para sobreponerse al banner */}
-                            <div className="absolute -top-20 left-6 bg-white rounded-full p-1 shadow-lg">
+                            <div className="absolute -top-36 sm:-top-28 left-1/2 sm:left-4 transform -translate-x-1/2 sm:translate-x-0 bg-white rounded-full p-1 shadow-lg">
                                 {perfil?.urlImgPerfil ? (
                                     <Image
                                         src={perfil?.urlImgPerfil}
-                                        width={100}
-                                        height={100}
+                                        width={160}
+                                        height={160}
                                         alt={`foto ${perfil?.nombres}`}
-                                        className='rounded-full'
+                                        className="rounded-full"
                                     />
                                 ) : (
                                     <div className="bg-uno rounded-full p-4">
@@ -187,6 +189,7 @@ export default function Perfil() {
                                     </div>
                                 )}
                             </div>
+
 
                             {/* Botones de acción a la derecha */}
                             <div className="flex flex-col sm:flex-row justify-end gap-3 mb-6 mt-2">
@@ -238,7 +241,7 @@ export default function Perfil() {
                                         </div>
                                     </div>
                                     <div className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-uno transition-colors">
-                                        <Phone className="text-dos mr-3 flex-shrink-0" size={24} />
+                                        <IdCard className="text-dos mr-3 flex-shrink-0" size={24} />
                                         <div>
                                             <p className="text-sm text-gray-500">Identificacion</p>
                                             <p className="font-medium">{perfil.identificacion}</p>

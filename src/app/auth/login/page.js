@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { UserPlus, LogIn } from 'lucide-react'
 
 import SignIn from './form.js'
-import SignUp from '../register/form.js'
 
 const Login = () => {
 

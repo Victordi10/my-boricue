@@ -6,7 +6,7 @@ export function authMiddleware(handler) {
     return async (req, context) => {
         try {
             // 🔹 Verificar los headers correctamente
-           /*  const authHeader = req.headers.get("authorization"); // ✅ Acceder a los headers correctamente en Next.js
+            const authHeader = req.headers.get("authorization"); // ✅ Acceder a los headers correctamente en Next.js
             //console.log("📥 Headers recibidos en backend:", req.headers);
             //console.log("🔑 Header Authorization recibido:", authHeader);
 
@@ -18,25 +18,10 @@ export function authMiddleware(handler) {
             }
 
             const token = authHeader.split(" ")[1]; // Extraer token
-            console.log("✅ Token recibido en backend:", token); */
-            console.log("🧪 JWT_SECRETO:", process.env.JWT_SECRETO);
-
-            const cookieHeader = req.headers.get("cookie") || "";
-            const token = cookieHeader
-                .split(";")
-                .find((c) => c.trim().startsWith("jwt="))
-                ?.split("=")[1];
-
-            console.log("🍪 Token recibido desde cookie:", token);
-
-            if (!token) {
-                return new Response(JSON.stringify({ message: "Token no proporcionado" }), {
-                    status: 401,
-                });
-            }
+            //console.log("✅ Token recibido en backend:", token);
 
             const decoded = jwt.verify(token, SECRET_KEY);
-            req.user = decoded; // Guardar usuario en la request
+            req.user = decoded; // Guardar usuario en la request 
 
             return handler(req, context);
         } catch (error) {
