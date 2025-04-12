@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 
-const SECRET_KEY = process.env.JWT_SECRET || "clave_secreta_super_segura"; // ⚠️ Verifica que JWT_SECRET esté definido en .env
+const SECRET_KEY = process.env.JWT_SECRETO; // ⚠️ Verifica que JWT_SECRET esté definido en .env
 
 export function authMiddleware(handler) {
     return async (req, context) => {
         try {
             // 🔹 Verificar los headers correctamente
-            const authHeader = req.headers.get("authorization"); // ✅ Acceder a los headers correctamente en Next.js
+           /*  const authHeader = req.headers.get("authorization"); // ✅ Acceder a los headers correctamente en Next.js
             //console.log("📥 Headers recibidos en backend:", req.headers);
             //console.log("🔑 Header Authorization recibido:", authHeader);
 
@@ -18,9 +18,24 @@ export function authMiddleware(handler) {
             }
 
             const token = authHeader.split(" ")[1]; // Extraer token
-            //console.log("✅ Token recibido en backend:", token);
+            console.log("✅ Token recibido en backend:", token); */
+            console.log("🧪 JWT_SECRETO:", process.env.JWT_SECRETO);
 
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || "clave_secreta_super_segura");
+            const cookieHeader = req.headers.get("cookie") || "";
+            const token = cookieHeader
+                .split(";")
+                .find((c) => c.trim().startsWith("jwt="))
+                ?.split("=")[1];
+
+            console.log("🍪 Token recibido desde cookie:", token);
+
+            if (!token) {
+                return new Response(JSON.stringify({ message: "Token no proporcionado" }), {
+                    status: 401,
+                });
+            }
+
+            const decoded = jwt.verify(token, SECRET_KEY);
             req.user = decoded; // Guardar usuario en la request
 
             return handler(req, context);

@@ -5,8 +5,10 @@ import { User, MapPin, Phone, Mail, Lock, UserCircle, Building, ChevronLeft, Che
 import Link from "next/link"
 import api from "@/services/axiosInstance"
 import { useRouter } from "next/navigation"
+import { useGlobalState } from '@/context/GlobalStateContext';
 
 const SignUp = ({  }) => {
+    const { setUserId } = useGlobalState();
     const router = useRouter()
     const [formData, setFormData] = useState({
         iden: "",
@@ -112,7 +114,8 @@ const SignUp = ({  }) => {
 
             if (data.success && data.data.token) {
                 localStorage.setItem("token", data.data.token); // Guardar el token en localStorage
-                router.replace(`/dashboard/${data.data.userId}`)
+                setUserId(data.data.userId)
+                router.replace(`/dashboard/dashboards`)
                 setMensaje("Registro exitoso")
             } else {
                 // Manejar error

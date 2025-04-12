@@ -24,9 +24,9 @@ export default function AppLayout({ children }) {
   return (
     <html lang="es">
       <body className={`${dosis.variable} ${poppins.variable} antialiased`}>
-        <RootLayout>
-          {children}
-        </RootLayout>
+          <RootLayout>
+            {children}
+          </RootLayout>
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getUserByEmail, verificarPassword } from '@/lib/models/User';
+import { getUserByEmail, verificarPassword } from '@/lib/models/userModel';
 import jwt from 'jsonwebtoken';
 import { errorResponse, successResponse } from '@/utils/handler';
 
@@ -26,6 +26,8 @@ export async function POST(req) {
         const token = jwt.sign({ idUsuario: user.idUsuario }, process.env.JWT_SECRETO, {
             expiresIn: process.env.JWT_TIEMPO_EXPIRA || '1h',
         });
+        console.log("🧪 JWT_SECRETO:", process.env.JWT_SECRETO);
+
 
         return successResponse('Login exitoso', { token, userId: user.idUsuario });
     } catch (error) {

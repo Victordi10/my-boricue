@@ -19,9 +19,10 @@ import Loader from '@/components/Loader';
 import { ErrorScreen, InlineMessage } from '@/components/ShowMensaje';
 import EditProfileModal from './EditProfileModal';
 import Image from 'next/image';
+import { useGlobalState } from '@/context/GlobalStateContext';
 
 export default function Perfil() {
-    const router = useRouter();
+    const { userId } = useGlobalState();
     const [perfil, setPerfil] = useState(null);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -29,12 +30,13 @@ export default function Perfil() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [notification, setNotification] = useState({ show: false, message: '', type: 'info' });
-    const { id } = useParams();
+
+    console.log('perfil', userId)
 
     const getPerfil = async () => {
         setLoading(true);
         try {
-            const response = await api.get(`/api/dashboard/perfil/${id}`);
+            const response = await api.get(`/api/dashboard/perfil/${userId}`);
             if (response.status === 200) {
                 const data = response.data.data;
                 setPerfil(data);
@@ -109,7 +111,7 @@ export default function Perfil() {
         const token = localStorage.getItem("token");
         if (!token) return;
         getPerfil();
-    }, []);
+    }, [userId]);
 
     if (loading) {
         return (
@@ -235,6 +237,13 @@ export default function Perfil() {
                                             <p className="font-medium">{perfil.telefono}</p>
                                         </div>
                                     </div>
+                                    <div className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-uno transition-colors">
+                                        <Phone className="text-dos mr-3 flex-shrink-0" size={24} />
+                                        <div>
+                                            <p className="text-sm text-gray-500">Identificacion</p>
+                                            <p className="font-medium">{perfil.identificacion}</p>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="space-y-4">
@@ -271,15 +280,6 @@ export default function Perfil() {
                                         </div>
                                     )}
 
-                                    {perfil.empresa && (
-                                        <div className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-uno transition-colors">
-                                            <Building className="text-dos mr-3 flex-shrink-0" size={24} />
-                                            <div>
-                                                <p className="text-sm text-gray-500">Empresa</p>
-                                                <p className="font-medium">{perfil.empresa}</p>
-                                            </div>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>
@@ -302,7 +302,7 @@ export default function Perfil() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 perfil={perfil}
-                usuarioId={id}
+                usuarioId={userId}
                 onProfileUpdated={handleProfileUpdated}
             />
         </div>

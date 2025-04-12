@@ -1,7 +1,7 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
-import { registrarUser } from '@/lib/models/User';
+import { registrarUser } from '@/lib/models/userModel';
 import { errorResponse, successResponse } from '@/utils/handler';
 
 export async function POST(req) {

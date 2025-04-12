@@ -7,6 +7,7 @@ export const getUser = async (id) => {
         return results;
     } catch (error) {
         console.error(`Error al obtener usuarios: ${error}`);
+        throw error;
     }
 }
 
@@ -23,5 +24,6 @@ export const actualizarPerfil = async (nombres, telefono, direccion, imageUrl, i
         return await db(sql, [nombres, imageUrl, telefono, direccion, id]);
     } catch (error) {
         console.error(`Error al actualizar al usuario: ${error}`);
+        throw error;
     }
 };

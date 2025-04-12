@@ -1,4 +1,4 @@
-import { getUserByEmail, verificarPassword } from "../models/User";
+import { getUserByEmail, verificarPassword } from "../models/userModel";
 import jwt from "jsonwebtoken";
 import { mostrarError, successResponse, errorResponse } from "../../utils/handler";
 

@@ -13,39 +13,52 @@ import {
     Menu
 } from "lucide-react";
 import Image from "next/image";
+import { useGlobalState } from '@/context/GlobalStateContext';
+
 
 // Array con opciones de navegación para Boricue
-const menuItems = [
-    {
-        label: "Dashboard",
-        path: "/dashboard/dashboard",
-        icon: <LayoutDashboard className="mr-3 h-5 w-5 text-dos" />
-    },
-    {
-        label: "Perfil",
-        path: "/dashboard/perfil/4",
-        icon: <User className="mr-3 h-5 w-5 text-dos" />
-    },
-    {
-        label: "Productos",
-        path: "/dashboard/productos",
-        icon: <ShoppingBag className="mr-3 h-5 w-5 text-dos" />
-    },
-    {
-        label: "Chat",
-        path: "/dashboard/chat",
-        icon: <MessageCircle className="mr-3 h-5 w-5 text-dos" />
-    },
-    {
-        label: "Configuración",
-        path: "/dashboard/configuracion",
-        icon: <Settings className="mr-3 h-5 w-5 text-dos" />
-    }
-];
+
 
 // Componente Aside
 export default function Aside() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { userId, setUserId } = useGlobalState();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        setUserId(null);
+        router.push('/auth/login');
+    };
+
+
+    const menuItems = [
+        {
+            label: "Dashboard",
+            path: "/dashboard/dashboard",
+            icon: <LayoutDashboard className="mr-3 h-5 w-5 text-dos" />
+        },
+        {
+            label: "Perfil",
+            path: "/dashboard/perfil",
+            icon: <User className="mr-3 h-5 w-5 text-dos" />
+        },
+        {
+            label: "Productos",
+            path: "/dashboard/productos",
+            icon: <ShoppingBag className="mr-3 h-5 w-5 text-dos" />
+        },
+        {
+            label: "Chat",
+            path: "/dashboard/chat",
+            icon: <MessageCircle className="mr-3 h-5 w-5 text-dos" />
+        },
+        {
+            label: "Configuración",
+            path: "/dashboard/configuracion",
+            icon: <Settings className="mr-3 h-5 w-5 text-dos" />
+        }
+    ];
 
     return (
         <>
@@ -193,7 +206,9 @@ export default function Aside() {
 
                         {/* Botón de cerrar sesión */}
                         <div className="p-4">
-                            <button className="flex items-center w-full px-4 py-3 rounded-lg text-texto hover:bg-red-50 hover:text-red-600 transition-colors">
+                            <button 
+                                onClick={handleLogout}
+                                className="flex items-center w-full px-4 py-3 rounded-lg text-texto hover:bg-red-50 hover:text-red-600 transition-colors">
                                 <LogOut className="mr-3 h-5 w-5" />
                                 Cerrar sesión
                             </button>

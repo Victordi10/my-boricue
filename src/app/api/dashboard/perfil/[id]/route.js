@@ -1,14 +1,17 @@
 import { errorResponse, successResponse } from '@/utils/handler';
-import { getUser, actualizarPerfil } from '@/lib/models/perfil';
+import { getUser, actualizarPerfil } from '@/lib/models/perfilModel';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 import { v4 as uuid } from 'uuid'; // npm install uuid
+import { authMiddleware } from "@/middleware/authMiddleware";
 
 
 // Ruta POST para login
 
-export async function GET(req, { params }) {
+const getHandler = async (req, context) => {
     try {
+        const { params } = context
+
         const { id } = params;
         if (!id) {
             return errorResponse("falta el id", 401);
@@ -26,11 +29,12 @@ export async function GET(req, { params }) {
     }
 }
 
-export async function PUT(req, { params }) {
+const putHandler = async (req, context) => {
+    const { params } = context
     const formData = await req.formData();
     const id = params.id;
 
-    if(!id){
+    if (!id) {
         errorResponse("Faltan parametros necesarios", 401)
     }
 
@@ -55,7 +59,7 @@ export async function PUT(req, { params }) {
     try {
         await actualizarPerfil(nombres, telefono, direccion, imageUrl, id);
 
-    let enviarImg = imageUrl ? imageUrl : urlImgActual
+        let enviarImg = imageUrl ? imageUrl : urlImgActual
 
         return successResponse('Perfil actualizado', {
             id,
@@ -70,3 +74,6 @@ export async function PUT(req, { params }) {
         return errorResponse("Error actualizando perfil", 500);
     }
 }
+
+export const GET = authMiddleware(getHandler)
+export const PUT = authMiddleware(putHandler);
