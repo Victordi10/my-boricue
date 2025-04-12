@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useGlobalState } from '@/context/GlobalStateContext';
-
+import Link from "next/link";
 
 // Array con opciones de navegación para Boricue
 
@@ -83,18 +83,18 @@ export default function Aside() {
                         {menuItems.map((item, index) => (
                             <li key={index}>
                                 {item.path ? (
-                                    <a
+                                    <Link
                                         href={item.path}
-                                        className="flex items-center px-4 py-3 text-texto hover:bg-uno hover:text-dos group transition-colors"
+                                        className="flex text-base font-semibold items-center px-4 py-3 text-texto hover:bg-uno hover:text-dos group transition-colors"
                                     >
                                         {item.icon}
                                         <span className="flex-1">{item.label}</span>
                                         <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity text-dos" />
-                                    </a>
+                                    </Link>
                                 ) : (
                                     <button
                                         onClick={item.onClick}
-                                        className="flex items-center px-4 py-3 w-full text-left text-texto hover:bg-uno hover:text-dos group transition-colors"
+                                        className="flex text-base font-semibold items-center px-4 py-3 w-full text-left text-texto hover:bg-uno hover:text-dos group transition-colors"
                                     >
                                         {item.icon}
                                         <span className="flex-1">{item.label}</span>
@@ -176,21 +176,21 @@ export default function Aside() {
                                 {menuItems.map((item, index) => (
                                     <li key={index}>
                                         {item.path ? (
-                                            <a
+                                            <Link
                                                 href={item.path}
-                                                className="flex items-center px-4 py-3 text-texto hover:bg-uno hover:text-dos transition-colors"
+                                                className="flex font-semibold text-base items-center px-4 py-3 text-texto hover:bg-uno hover:text-dos transition-colors"
                                                 onClick={() => setMobileMenuOpen(false)}
                                             >
                                                 {item.icon}
                                                 <span className="flex-1">{item.label}</span>
-                                            </a>
+                                            </Link>
                                         ) : (
                                             <button
                                                 onClick={() => {
                                                     item.onClick();
                                                     setMobileMenuOpen(false);
                                                 }}
-                                                className="flex items-center px-4 py-3 w-full text-left text-texto hover:bg-uno hover:text-dos transition-colors"
+                                                className="flex font-semibold text-base items-center px-4 py-3 w-full text-left text-texto hover:bg-uno hover:text-dos transition-colors"
                                             >
                                                 {item.icon}
                                                 <span className="flex-1">{item.label}</span>
