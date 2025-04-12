@@ -36,7 +36,7 @@ const SignIn = ({ }) => {
 
             if (data.data.token) {
                 localStorage.setItem("token", response.data.token); // Guardar el token en localStorage
-                router.replace("/dashboard"); // Redirigir al dashboard
+                router.replace(`/dashboard/${data.data.userId}`); // Redirigir al dashboard
                 console.log('Inicio sesion')
             } else {
                 setErrorMessage("Error al iniciar sesión. Verifica tus credenciales.");

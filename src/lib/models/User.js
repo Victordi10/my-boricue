@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import db from "../db";
-import Register from "@/app/auth/register/page";
 
 // Obtener usuario por correo
 export async function getUserByEmail(email) {
