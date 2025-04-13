@@ -1,10 +1,9 @@
-import { errorResponse, successResponse } from '@/utils/handler';
+import { errorResponse, successResponse, handleImageUpload, eliminarImgAnterior } from '@/utils/handler';
 import { getUser, actualizarPerfil } from '@/lib/models/perfilModel';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 import { v4 as uuid } from 'uuid'; // npm install uuid
 import { authMiddleware } from "@/middleware/authMiddleware";
-
 
 // Ruta POST para login
 
@@ -44,29 +43,21 @@ const putHandler = async (req, context) => {
     const file = formData.get('profileImage');
     const urlImgActual = formData.get('urlImgActual')
 
-    let imageUrl = null;
+    const imageUrl = handleImageUpload(file);
 
-    if (file && typeof file === 'object' && file.name) {
-        const buffer = Buffer.from(await file.arrayBuffer());
-        const ext = path.extname(file.name); // .jpg, .png, etc.
-        const fileName = `${uuid()}${ext}`;
-        const filePath = path.join(process.cwd(), 'public', 'uploads', fileName);
-
-        await writeFile(filePath, buffer);
-        imageUrl = `/uploads/${fileName}`;
-    }
 
     try {
-        await actualizarPerfil(nombres, telefono, direccion, imageUrl, id);
+        const imagenFinal = await eliminarImgAnterior(imageUrl, urlImgActual)
 
-        let enviarImg = imageUrl ? imageUrl : urlImgActual
+        await actualizarPerfil(nombres, telefono, direccion, imagenFinal, id);
+
 
         return successResponse('Perfil actualizado', {
             id,
             nombres,
             telefono,
             direccion,
-            urlImgPerfil: enviarImg
+            urlImgPerfil: imagenFinal
         });
 
     } catch (error) {

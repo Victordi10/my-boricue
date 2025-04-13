@@ -6,45 +6,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import api from '@/services/axiosInstance';
-import ProductCard from '@/components/ProductCard';
+import ProductCard from './ProductCard';
 import { ErrorScreen, InlineMessage } from '@/components/ShowMensaje';
 import { useGlobalState } from '@/context/GlobalStateContext';
 import Titulo from '@/ui/Titulo';
 import Parrafo from '@/ui/Parrafo';
-
-
-const exampleProducts = [
-    {
-        idProducto: 1,
-        nombre: "Cámara Digital Profesional",
-        descripcion: "Cámara DSLR con sensor de 24MP, grabación de video 4K y conectividad WiFi. Perfecta para fotógrafos profesionales y aficionados exigentes.",
-        precio: "899.99",
-        categoria: "Electrónica",
-        imagen: "camara-digital.jpg",
-        stock: 15,
-        fechaPublicacion: "2025-03-15"
-    },
-    {
-        idProducto: 2,
-        nombre: "Zapatillas Running Ultralight",
-        descripcion: "Zapatillas deportivas ligeras con tecnología de amortiguación avanzada. Diseñadas para corredores de larga distancia y uso diario.",
-        precio: "129.95",
-        categoria: "Deportes",
-        imagen: "zapatillas-running.jpg",
-        stock: 28,
-        fechaPublicacion: "2025-04-02"
-    },
-    {
-        idProducto: 3,
-        nombre: "Set de Muebles para Jardín",
-        descripcion: "Conjunto de mesa y 4 sillas para exterior, fabricado con materiales resistentes a la intemperie. Ideal para terrazas y jardines.",
-        precio: "349.50",
-        categoria: "Hogar",
-        imagen: "muebles-jardin.jpg",
-        stock: 7,
-        fechaPublicacion: "2025-03-22"
-    }
-];
+import Modal from '@/ui/Modal';
+import CreatePostButton from './crearProducto';
+import Loader from '@/components/Loader';
+import { EditPostModal } from './editProducto';
 
 // Componente de estado vacío
 const EmptyState = () => (
@@ -61,23 +31,18 @@ const EmptyState = () => (
         <p className="text-gray-600 text-center max-w-md mb-6">
             Comienza a vender tus productos creando tu primera publicación
         </p>
-        <Link
-            href="/crear-publicacion"
-            className="px-6 py-3 bg-dos text-white font-medium rounded-lg hover:bg-opacity-90 transition-colors flex items-center"
-        >
-            <Plus size={18} className="mr-2" />
-            Crear publicación
-        </Link>
+        <CreatePostButton />
     </div>
 );
 
 // Componente principal - Página de Mis Publicaciones
 export default function MisPublicaciones() {
     const { userId } = useGlobalState();
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [productSelect, setProductSelect] = useState(null)
 
     // Función para cargar productos
     const loadProducts = async () => {
@@ -105,6 +70,16 @@ export default function MisPublicaciones() {
         }
     }, [userId]);
 
+    const handleEditSuccess = () => {
+        setLoading(true);
+        loadProducts().finally(() => {
+            setLoading(false);
+            setAlert({ message: 'Editado exitosamente', variant: 'success' });
+            setIsModalOpen(false);
+        });
+    };
+
+
     // Función para eliminar producto
     const handleDeleteProduct = async (productId) => {
         try {
@@ -116,6 +91,9 @@ export default function MisPublicaciones() {
             alert("No se pudo eliminar el producto. Intenta de nuevo más tarde.");
         }
     };
+
+    const handleOpen = () => setIsModalOpen(true);
+    const handleClose = () => setIsModalOpen(false);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -138,13 +116,7 @@ export default function MisPublicaciones() {
                         </h2>
                         <p className="text-sm text-gray-500">Total publicaciones: {products.length}</p>
                     </div>
-                    <Link
-                        href="/crear-publicacion"
-                        className="px-5 py-2 bg-dos text-white font-medium rounded-lg shadow-sm hover:bg-opacity-90 transition-colors flex items-center"
-                    >
-                        <Plus size={20} className="mr-2" />
-                        Nueva publicación
-                    </Link>
+                    <CreatePostButton />
                 </div>
 
                 {/* Mensaje de error */}
@@ -157,19 +129,22 @@ export default function MisPublicaciones() {
 
                 {/* Estado de carga */}
                 {loading ? (
-                    <div className="flex justify-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-dos"></div>
+                    <div className="flex flex-col items-center justify-center py-12">
+                        <Loader />
+                        <p>Cargando tus productos...</p>
                     </div>
                 ) : (
                     <>
                         {/* Grid de productos */}
                         {products.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                 {products.map(product => (
                                     <ProductCard
                                         key={product.idProducto}
                                         product={product}
                                         onDelete={handleDeleteProduct}
+                                        setProductSelect={setProductSelect}
+                                        handleOpen={handleOpen}
                                     />
                                 ))}
                             </div>
@@ -182,13 +157,17 @@ export default function MisPublicaciones() {
 
             {/* Botón flotante para añadir */}
             <div className="fixed bottom-8 right-8 md:hidden">
-                <Link
-                    href="/crear-publicacion"
-                    className="flex items-center justify-center h-14 w-14 rounded-full bg-dos text-white shadow-lg hover:bg-opacity-90 transition-colors"
-                >
-                    <Plus size={24} />
-                </Link>
+                <CreatePostButton
+                    variant='icon'
+                />
             </div>
+
+            <EditPostModal
+                isOpen={isModalOpen}
+                onClose={handleClose}
+                productData={productSelect}
+                onSuccess={handleEditSuccess}
+            />
         </div>
     );
 }

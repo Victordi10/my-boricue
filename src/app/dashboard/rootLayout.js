@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
             <Aside />
 
             {/* Contenido principal con margen para el sidebar */}
-            <main className="flex flex-col w-full mt-16 md:mt-0 md:ml-64 p-4 ">
+            <main className="flex flex-col w-full mt-16 md:mt-0 md:ml-56 p-4 ">
                 {children}
             </main>
         </div>

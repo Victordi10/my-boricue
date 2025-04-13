@@ -47,14 +47,29 @@ export const getTotalProductsCount = async () => {
     }
 };
 
-// Original function for reference
-export const getAllProducts = async () => {
+export const crearProducto = async (imagen, nombre, descripcion, tipo, categoria, precio, fecha, usuario_id) => {
     try {
-        const sql = 'SELECT * FROM producto';
-        const result = await db(sql);
+        const sql = 'INSERT INTO producto (imagen, nombre, descripcion, tipo, categoria, precio, fecha, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+
+        const result = await db(sql, [imagen, nombre, descripcion, tipo, categoria, precio, fecha, usuario_id]);
+        return result[0]?.total || 0;
+    } catch (error) {
+        console.error(`Error al obtener crear el producto: ${error}`);
+        throw error;
+    }
+}
+
+export const editProducto = async ({ idProducto, imagen, nombre, descripcion, tipo, categoria, precio, fecha }) => {
+    try {
+        const sql = `
+            UPDATE producto 
+            SET imagen = ?, nombre = ?, descripcion = ?, tipo = ?, categoria = ?, precio = ?, fecha = ?
+            WHERE idProducto = ?
+        `;
+        const result = await db(sql, [imagen, nombre, descripcion, tipo, categoria, precio, fecha, idProducto]);
         return result;
     } catch (error) {
-        console.error(`Error al cargar los productos: ${error}`);
+        console.error(`Error al editar el producto: ${error}`);
         throw error;
     }
 };

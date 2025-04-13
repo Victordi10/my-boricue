@@ -5,15 +5,16 @@ import { Plus, Heart, MessageCircle, Edit, Trash2, ShoppingCart } from 'lucide-r
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import api from '@/services/axiosInstance';
+import EditPostButton from './editProducto';
 
 // Componente de tarjeta de producto
-const ProductCard = ({ product, onDelete }) => {
+const ProductCard = ({ product, onDelete, setProductSelect, handleOpen }) => {
     const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
 
     const handleEdit = () => {
-        router.push(`/editar-publicacion/${product.idProducto}`);
+        setProductSelect(product)
+        handleOpen()
     };
 
     const handleDelete = () => {
@@ -37,7 +38,7 @@ const ProductCard = ({ product, onDelete }) => {
                 {/* Imagen del producto */}
                 <div className="h-full w-full relative">
                     <Image
-                        src={`/images/${product.imagen}`}
+                        src={product.imagen || '/LogoBoricue.png'}
                         alt={product.nombre}
                         fill
                         className="object-cover transition-transform duration-500 ease-in-out"
@@ -45,7 +46,7 @@ const ProductCard = ({ product, onDelete }) => {
                     />
 
                     {/* Overlay con acciones */}
-                    <div className={`absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                    {/*  <div className={`absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
                         <div className="flex space-x-3">
                             <button className="p-2 bg-white rounded-full hover:bg-dos hover:text-white transition-colors">
                                 <MessageCircle size={20} />
@@ -57,7 +58,7 @@ const ProductCard = ({ product, onDelete }) => {
                                 <ShoppingCart size={20} />
                             </button>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
@@ -66,7 +67,7 @@ const ProductCard = ({ product, onDelete }) => {
                 <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">{product.nombre}</h3>
                 <p className="text-sm text-gray-600 mt-1 line-clamp-2">{product.descripcion}</p>
                 <div className="mt-3 flex justify-between items-center">
-                    <span className="text-lg font-bold text-dos">${product.precio}</span>
+                    <span className="text-lg font-bold text-dos">{product.precio}</span>
                 </div>
 
                 {/* Botones de acción */}

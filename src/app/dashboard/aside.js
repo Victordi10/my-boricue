@@ -65,7 +65,7 @@ export default function Aside() {
     return (
         <>
             {/* Menú para escritorio */}
-            <aside className="hidden md:flex flex-col w-64 bg-fondo border-r border-gray-200 shadow-sm h-screen fixed left-0 top-0">
+            <aside className="hidden md:flex flex-col w-56 bg-fondo border-r border-gray-200 shadow-sm h-screen fixed left-0 top-0">
                 {/* Encabezado */}
                 <div className="p-4 border-b border-gray-200 bg-dos">
                     <div className="relative overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105">

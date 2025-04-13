@@ -1,5 +1,10 @@
 import Joi from 'joi';
 import { NextResponse } from "next/server";
+import { writeFile } from 'fs/promises';
+import path from 'path';
+import { v4 as uuid } from 'uuid'; // npm install uuid
+import { unlink } from 'fs/promises';
+
 
 //muestro en la consola donde estuvo el error
 export const mostrarError = (donde, err) => {
@@ -12,6 +17,35 @@ export function errorResponse(message, statusCode = 500) {
 
 export function successResponse(message = "Operación exitosa", data = {}) {
     return NextResponse.json({ success: true, message, data }, { status: 200 });
+}
+
+export const handleImageUpload = async (file) => {
+    if (file && typeof file === 'object' && file.name) {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const ext = path.extname(file.name);
+        const fileName = `${uuid()}${ext}`;
+        const filePath = path.join(process.cwd(), 'public', 'uploads', fileName);
+
+        await writeFile(filePath, buffer);
+        return `/uploads/${fileName}`;
+    }
+    return null;
+};
+
+export const eliminarImgAnterior = async (imageUrl, imagenActual) => {
+    const imagenFinal = imageUrl ? imageUrl : imagenActual;
+    console.log('imagenActual', imagenActual, imageUrl)
+
+    if (imageUrl && imagenActual) {
+        const oldImagePath = path.join(process.cwd(), 'public', imagenActual);
+        try {
+            await unlink(oldImagePath);
+        } catch (err) {
+            console.warn("No se pudo eliminar la imagen anterior:", err);
+        }
+    }
+
+    return imagenFinal
 }
 
 //funcion para validar datos

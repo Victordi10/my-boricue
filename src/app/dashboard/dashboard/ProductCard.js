@@ -77,7 +77,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
                 {/* Product Image */}
                 <div className="relative h-56 overflow-hidden bg-gray-100">
                     <Image
-                        src={`/images/${product.imagen || 'default-product.jpg'}`}
+                        src={`${product.imagen || '/LogoBoricue.png'}`}
                         alt={product.nombre}
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                         fill
