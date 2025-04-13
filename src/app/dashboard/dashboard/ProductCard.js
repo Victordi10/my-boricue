@@ -2,8 +2,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, MessageCircle, ShoppingCart, Tag, Gift, RefreshCw } from 'lucide-react';
-
 const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }) => {
+    const userIdNum = Number(userId)
+    console.log('user',product.usuario_id === userIdNum)
     // Determine button text and icon based on category
     const getActionButton = () => {
         switch (product.categoria?.toLowerCase()) {
@@ -40,7 +41,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
 
     // Get badge color based on category
     const getBadgeColor = () => {
-        if (product.usuario_id === userId) return 'bg-dos text-white';
+        if (product.usuario_id === userIdNum) return 'bg-dos text-white';
 
         switch (product.categoria?.toLowerCase()) {
             case 'venta': return 'bg-green-500 text-white';
@@ -56,7 +57,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
             <div className="relative">
                 <div className="absolute top-0 left-0 z-10 m-2">
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getBadgeColor()}`}>
-                        {product.usuario_id === userId
+                        {product.usuario_id === userIdNum
                             ? <>
                                 <Tag className="mr-1 h-3 w-3" />
                                 Mi producto
@@ -85,7 +86,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
                     />
 
                     {/* Hover Actions */}
-                    {product.usuario_id !== userId && (
+                    {product.usuario_id !== userIdNum && (
                         <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center">
                             <div className="flex space-x-3 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
                                 <Link
@@ -117,7 +118,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
                             ? 'Gratis'
                             : product.precio || 'Consultar precio'}
                     </span>
-                    {product.usuario_id !== userId && getActionButton()}
+                    {product.usuario_id !== userIdNum && getActionButton()}
                 </div>
             </div>
         </div>

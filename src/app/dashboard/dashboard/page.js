@@ -23,6 +23,8 @@ import ProductFilter from './ProductFilter';
 import Pagination from './Pagination';
 import Titulo from '@/ui/Titulo';
 import Parrafo from '@/ui/Parrafo';
+import Loader from '@/components/Loader';
+import { useGlobalState } from '@/context/GlobalStateContext';
 
 // Category icons mapping
 const CATEGORY_ICONS = {
@@ -44,8 +46,8 @@ const MATERIAL_ICONS = {
 };
 
 export default function Products() {
+    const { userId } = useGlobalState()
     const [products, setProducts] = useState([]);
-    const [userId, setUserId] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -61,8 +63,10 @@ export default function Products() {
     const productsPerPage = 8;
 
     useEffect(() => {
-        fetchProducts();
-    }, [currentPage, searchTerm, selectedCategory, selectedMaterial]);
+        if (userId) {
+            fetchProducts();
+        }
+    }, [currentPage, searchTerm, selectedCategory, selectedMaterial, userId]);
 
     const fetchProducts = async () => {
         setIsLoading(true);
@@ -85,7 +89,6 @@ export default function Products() {
                 setProducts(data.data.productos || []);
                 setTotalProducts(data.data.total || 0);
                 setTotalPages(data.data.totalPages || 1);
-                setUserId(data.data.userId || '');
             } else {
                 setError({
                     message: data.message || 'Error al cargar los productos',
@@ -201,8 +204,9 @@ export default function Products() {
                 )}
 
                 {isLoading ? (
-                    <div className="flex justify-center items-center py-16">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-dos"></div>
+                    <div className="flex flex-col items-center justify-center py-12">
+                        <Loader />
+                        <p>Cargando productos...</p>
                     </div>
                 ) : products && products.length > 0 ? (
                     <div className='w-full bg-fondo p-6'>

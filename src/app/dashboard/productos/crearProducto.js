@@ -11,11 +11,15 @@ export default function CreatePostButton({
     label = 'Crear Publicación',
     variant = 'default', // "default" | "icon" | "floating"
     icon: Icon = PlusCircle,
+    loadProducts
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpen = () => setIsModalOpen(true);
-    const handleClose = () => setIsModalOpen(false);
+    const handleClose = () => {
+        loadProducts()
+        setIsModalOpen(false)
+    };
 
     const baseClass = "flex items-center justify-center gap-2 text-white font-medium py-2 px-4 rounded-md transition-opacity";
     const styles = {
@@ -212,7 +216,6 @@ function CreatePostModal({ isOpen, onClose }) {
                                 type="button"
                                 onClick={() => {
                                     handleClose();
-                                    window.location.href = '/dashboard';
                                 }}
                                 className="bg-divisiones text-white px-4 py-2 rounded-md hover:bg-opacity-90"
                             >

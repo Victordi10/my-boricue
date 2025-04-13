@@ -21,7 +21,7 @@ const EmptyState = () => (
     <div className="flex flex-col items-center justify-center py-16 px-4 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
         <div className="bg-uno p-4 rounded-full mb-4">
             <Image
-                src="/images/empty-box.png"
+                src="/LogoBoricueCircular.png"
                 alt="Empty box"
                 width={80}
                 height={80}
@@ -31,7 +31,7 @@ const EmptyState = () => (
         <p className="text-gray-600 text-center max-w-md mb-6">
             Comienza a vender tus productos creando tu primera publicación
         </p>
-        <CreatePostButton />
+        <CreatePostButton loadProducts={loadProducts} />
     </div>
 );
 
@@ -46,6 +46,7 @@ export default function MisPublicaciones() {
 
     // Función para cargar productos
     const loadProducts = async () => {
+        setError(null)
         setLoading(true);
         try {
             const response = await api.get(`/api/dashboard/productos/${userId}`);
@@ -57,7 +58,8 @@ export default function MisPublicaciones() {
             setError(null);
         } catch (err) {
             console.error("Error al cargar los productos:", err);
-            setError("No se pudieron cargar tus publicaciones. Intenta de nuevo más tarde.");
+            setError({ message: 'No se pudieron cargar tus publicaciones. Intenta de nuevo más tarde.', variant: 'error' });
+
         } finally {
             setLoading(false);
         }
@@ -79,16 +81,19 @@ export default function MisPublicaciones() {
         });
     };
 
-
     // Función para eliminar producto
     const handleDeleteProduct = async (productId) => {
         try {
-            await api.delete(`/api/publicaciones/${productId}`);
+            await api.delete(`/api/dashboard/productos/${userId}`, {
+                data: { productId },
+                headers: { 'Content-Type': 'application/json' }
+            })
             // Actualizar la lista de productos después de eliminar
             setProducts(products.filter(p => p.idProducto !== productId));
+            setError({ message: 'Eliminado exitosamente', variant: 'success' });
         } catch (err) {
             console.error("Error al eliminar el producto:", err);
-            alert("No se pudo eliminar el producto. Intenta de nuevo más tarde.");
+            setError({ message: 'No se pudo eliminar tus publicacion. Intenta de nuevo más tarde.', variant: 'error' });
         }
     };
 
@@ -96,33 +101,37 @@ export default function MisPublicaciones() {
     const handleClose = () => setIsModalOpen(false);
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen w-full bg-gray-50">
             {/* Encabezado con degradado */}
-            <div className="bg-gradient-to-r from-dos to-divisiones p-6">
-                <div className="max-w-6xl mx-auto">
-                    <Parrafo clas="text-white text-opacity-90 text-center mt-2 max-w-2xl mx-auto">
-                        Gestiona tus productos publicados en la plataforma y controla tus ventas
-                    </Parrafo>
-                </div>
+            <div className="bg-gradient-to-r max-w-6xl mx-auto w-full from-dos to-divisiones p-6">
+                <Parrafo clas="text-white text-opacity-90 text-center mt-2 max-w-2xl mx-auto">
+                    Gestiona tus productos publicados en la plataforma y controla tus ventas
+                </Parrafo>
             </div>
 
             {/* Contenido principal */}
-            <div className="max-w-6xl mx-auto py-8 px-4">
+            <div className="max-w-6xl w-full mx-auto py-8 px-4">
                 {/* Filtros y botón de añadir */}
-                <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+                <div className="flex flex-col w-full md:flex-row justify-between items-center mb-6">
                     <div className="flex flex-col md:items-start items-center justify-center mb-4 md:mb-0">
                         <h2 className="text-2xl font-bold text-gray-800 ">
                             Tus productos
                         </h2>
                         <p className="text-sm text-gray-500">Total publicaciones: {products.length}</p>
                     </div>
-                    <CreatePostButton />
+                    <CreatePostButton loadProducts={loadProducts} />
                 </div>
 
                 {/* Mensaje de error */}
+
                 {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-600 rounded-lg p-4 mb-6">
-                        {error}
+                    <div className="mb-4">
+                        <InlineMessage
+                            mensaje={error.message}
+                            variant={error.variant}
+                            timeout={5000}
+                            onClose={() => setError(null)}
+                        />
                     </div>
                 )}
 
@@ -159,6 +168,7 @@ export default function MisPublicaciones() {
             <div className="fixed bottom-8 right-8 md:hidden">
                 <CreatePostButton
                     variant='icon'
+                    loadProducts={loadProducts}
                 />
             </div>
 

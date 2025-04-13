@@ -73,3 +73,29 @@ export const editProducto = async ({ idProducto, imagen, nombre, descripcion, ti
         throw error;
     }
 };
+
+export const getUrlImgProducto = async(idProducto, userId)=>{
+    try {
+        const sql = `
+            SELECT imagen FROM producto WHERE idProducto = ? AND usuario_id = ?
+        `;
+        const [result] = await db(sql, [idProducto, userId]);
+        return result;
+    } catch (error) {
+        console.error(`Error al eliminar el producto: ${error}`);
+        throw error;
+    }
+}
+
+export const deleteProducto = async (userId, idProducto) => {
+    try {
+        const sql = `
+            DELETE FROM producto WHERE idProducto = ? AND usuario_id = ?
+        `;
+        const result = await db(sql, [idProducto, userId]);
+        return result;
+    } catch (error) {
+        console.error(`Error al eliminar el producto: ${error}`);
+        throw error;
+    }
+}

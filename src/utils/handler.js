@@ -48,6 +48,21 @@ export const eliminarImgAnterior = async (imageUrl, imagenActual) => {
     return imagenFinal
 }
 
+export const eliminarImagen = async (imageUrl) => {
+    if (!imageUrl) return false;
+
+    try {
+        const oldImagePath = path.join(process.cwd(), 'public', imageUrl);
+        console.log('Eliminando imagen:', oldImagePath);
+
+        await unlink(oldImagePath);
+        return true;
+    } catch (err) {
+        console.warn("No se pudo eliminar la imagen anterior:", err.message);
+        return false;
+    }
+};
+
 //funcion para validar datos
 
 export const validarUsername = () => {
