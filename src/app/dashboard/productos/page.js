@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Plus, Heart, MessageCircle, Edit, Trash2, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -17,7 +17,7 @@ import Loader from '@/components/Loader';
 import { EditPostModal } from './editProducto';
 
 // Componente de estado vacío
-const EmptyState = () => (
+const EmptyState = ({ loadProducts }) => (
     <div className="flex flex-col items-center justify-center py-16 px-4 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
         <div className="bg-uno p-4 rounded-full mb-4">
             <Image
@@ -40,37 +40,35 @@ export default function MisPublicaciones() {
     const { userId } = useGlobalState();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [productSelect, setProductSelect] = useState(null)
 
     // Función para cargar productos
-    const loadProducts = async () => {
-        setError(null)
+    const loadProducts = useCallback(async () => {
+        setError(null);
         setLoading(true);
         try {
             const response = await api.get(`/api/dashboard/productos/${userId}`);
-            const data = response.data.data
-            console.log('productos', data)
+            const data = response.data.data;
+            console.log('productos', data);
 
             setProducts(data);
-
             setError(null);
         } catch (err) {
             console.error("Error al cargar los productos:", err);
             setError({ message: 'No se pudieron cargar tus publicaciones. Intenta de nuevo más tarde.', variant: 'error' });
-
         } finally {
             setLoading(false);
         }
-    };
+    }, [userId]); // Solo se vuelve a crear si cambia el userId
 
     // Cargar productos al montar el componente
     useEffect(() => {
         if (userId) {
             loadProducts();
         }
-    }, [userId]);
+    }, [userId, loadProducts]);
 
     const handleEditSuccess = () => {
         setLoading(true);
@@ -158,7 +156,7 @@ export default function MisPublicaciones() {
                                 ))}
                             </div>
                         ) : (
-                            <EmptyState />
+                            <EmptyState loadProducts={loadProducts} />
                         )}
                     </>
                 )}
