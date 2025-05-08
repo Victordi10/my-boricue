@@ -8,6 +8,11 @@ export async function POST(req) {
     try {
         const { mail, pass, names, dress, phon, rol, iden } = await req.json();
 
+        // Validar que iden sea un número entero
+        if (!Number.isInteger(Number(iden))) {
+            return errorResponse('La identificación debe ser un número entero', 401);
+        }
+
         if (!mail || !pass || !names || !iden || !dress || !rol) {
             return errorResponse('Faltan parámetros', 400);
         }
