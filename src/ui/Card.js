@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react"
 import Image from "next/image"
 import Parrafo from "./Parrafo"
 import { ArrowRight, Sparkles } from "lucide-react"
+import { useState } from "react"
 
 const MaterialCard = ({ title, description, imageUrl }) => {
   return (
@@ -92,6 +95,10 @@ const BlogCard = ({ title, description, category = "Blog" }) => {
     </div>
   )
 }
+
+
+
+
 
 
 
