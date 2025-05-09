@@ -123,7 +123,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
                 <div className="flex items-center mb-4 pb-3 border-b border-gray-100">
                     <div className="relative h-10 w-10 mr-3 rounded-full overflow-hidden">
                         <Image 
-                            src={product.imagenUsuario || '/avatardefaul.webp'} 
+                            src={product?.imagenUsuario} 
                             alt={product.usuario}
                             className="object-cover"
                             fill

@@ -22,12 +22,8 @@ const dosis = Dosis({
 
 export default function AppLayout({ children }) {
   return (
-    <html lang="es">
-      <body className={`${dosis.variable} ${poppins.variable} antialiased`}>
-          <RootLayout>
-            {children}
-          </RootLayout>
-      </body>
-    </html>
+    <RootLayout>
+      {children}
+    </RootLayout>
   );
 }
