@@ -108,7 +108,10 @@ export default function Aside() {
 
                 {/* Botón de cerrar sesión */}
                 <div className="p-4">
-                    <button className="flex items-center w-full px-4 py-3 rounded-lg text-texto hover:bg-red-50 hover:text-red-600 transition-colors">
+                    <button
+                        className="flex items-center w-full px-4 py-3 rounded-lg text-texto hover:bg-red-50 hover:text-red-600 transition-colors"
+                        onClick={handleLogout}
+                    >
                         <LogOut className="mr-3 h-5 w-5" />
                         Cerrar sesión
                     </button>

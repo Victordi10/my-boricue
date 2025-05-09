@@ -38,7 +38,7 @@ const ProductCard = ({ product, onDelete, setProductSelect, handleOpen }) => {
                 {/* Imagen del producto */}
                 <div className="h-full w-full relative">
                     <Image
-                        src={product.imagen || '/LogoBoricue.png'}
+                        src={product.imagenUsuario}
                         alt={product.nombre}
                         fill
                         className="object-cover transition-transform duration-500 ease-in-out"
