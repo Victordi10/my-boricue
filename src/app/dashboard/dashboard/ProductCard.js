@@ -1,10 +1,16 @@
 // src/components/ProductCard.jsx
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, MessageCircle, ShoppingCart, Tag, Gift, RefreshCw } from 'lucide-react';
+import { Heart, MessageCircle, ShoppingCart, Tag, Gift, RefreshCw, Clock, User } from 'lucide-react';
+
 const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }) => {
-    const userIdNum = Number(userId)
-    console.log('user',product.usuario_id === userIdNum)
+    const userIdNum = Number(userId);
+    const isMyProduct = product.usuario_id === userIdNum;
+    const formattedDate = new Date(product.fecha).toLocaleDateString('es-ES', {
+        day: 'numeric',
+        month: 'short',
+    });
+    
     // Determine button text and icon based on category
     const getActionButton = () => {
         switch (product.categoria?.toLowerCase()) {
@@ -41,7 +47,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
 
     // Get badge color based on category
     const getBadgeColor = () => {
-        if (product.usuario_id === userIdNum) return 'bg-dos text-white';
+        if (isMyProduct) return 'bg-dos text-white';
 
         switch (product.categoria?.toLowerCase()) {
             case 'venta': return 'bg-green-500 text-white';
@@ -52,12 +58,12 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
     };
 
     return (
-        <div className="group bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl">
+        <div className="group bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl border border-gray-100">
             {/* Product Badge */}
             <div className="relative">
                 <div className="absolute top-0 left-0 z-10 m-2">
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getBadgeColor()}`}>
-                        {product.usuario_id === userIdNum
+                        {isMyProduct
                             ? <>
                                 <Tag className="mr-1 h-3 w-3" />
                                 Mi producto
@@ -86,7 +92,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
                     />
 
                     {/* Hover Actions */}
-                    {product.usuario_id !== userIdNum && (
+                    {!isMyProduct && (
                         <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center">
                             <div className="flex space-x-3 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
                                 <Link
@@ -111,14 +117,37 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
             {/* Product Info */}
             <div className="p-5">
                 <h3 className="text-xl font-semibold text-texto mb-2 line-clamp-1">{product.nombre}</h3>
-                <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.descripcion}</p>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.descripcion}</p>
+                
+                {/* User Info Section */}
+                <div className="flex items-center mb-4 pb-3 border-b border-gray-100">
+                    <div className="relative h-10 w-10 mr-3 rounded-full overflow-hidden">
+                        <Image 
+                            src={product.imagenUsuario || '/avatardefaul.webp'} 
+                            alt={product.usuario}
+                            className="object-cover"
+                            fill
+                            sizes="40px"
+                        />
+                    </div>
+                    <div className="flex-1">
+                        <p className="font-medium text-gray-900">{product.usuario}</p>
+                        <div className="flex items-center text-gray-500 text-xs">
+                            <Clock className="h-3 w-3 mr-1" />
+                            <span>{formattedDate}</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div className="flex justify-between items-center">
                     <span className="text-dos font-bold text-lg">
                         {product.categoria?.toLowerCase() === 'donacion'
                             ? 'Gratis'
-                            : product.precio || 'Consultar precio'}
+                            : product.precio 
+                              ? `$${Number(product.precio).toLocaleString()}`
+                              : 'Consultar precio'}
                     </span>
-                    {product.usuario_id !== userIdNum && getActionButton()}
+                    {!isMyProduct && getActionButton()}
                 </div>
             </div>
         </div>

@@ -26,9 +26,11 @@ export async function registrarUser(mail, pass, names, dress, phon, rol, iden) {
             throw new Error('El correo ya está registrado');
         }
 
+        const imgUrl ='/avatardefaul.webp'
+
         // Insertar el nuevo usuario y obtener el ID
-        const sql = 'INSERT INTO usuarios (identificacion, nombres, direccion, telefono, correo, contrasena, rol, estado) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-        const result = await db(sql, [iden, names, dress, phon, mail, pass, rol, estado]);
+        const sql = 'INSERT INTO usuarios (identificacion, nombres, direccion, telefono, correo, contrasena, urlImgPerfil, rol, estado) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const result = await db(sql, [iden, names, dress, phon, mail, pass, imgUrl, rol, estado]);
 
         if (!result.insertId) {
             throw new Error('No se pudo obtener el ID del usuario registrado');

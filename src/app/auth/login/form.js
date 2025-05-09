@@ -17,6 +17,9 @@ const SignIn = ({ }) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,8 +40,12 @@ const SignIn = ({ }) => {
 
             if (data.data.token) {
                 localStorage.setItem("token", data.data.token); // Guardar el token en localStorage
-                setUserId(data.data.userId)
-                router.replace(`/dashboard/dashboard`); // Redirigir al dashboard
+                setUserId(data.data.userId);
+                setSuccessMessage("Ingreso exitoso. Redirigiendo...");
+                setTimeout(() => {
+                router.replace(`/dashboard/dashboard`);
+                }, 2000); // Espera 2 segundos
+                // Redirigir al dashboard
                 //console.log('Inicio sesion', data.data.token)
             } else {
                 setErrorMessage("Error al iniciar sesión. Verifica tus credenciales.");
@@ -98,10 +105,8 @@ const SignIn = ({ }) => {
                     </div>
                 </div>
 
-                <ShowMensaje
-                    mensaje={errorMessage}
-                    isError={true}  // Agregar esta línea para mostrar el mensaje de error en color rojo
-                />
+                <ShowMensaje mensaje={errorMessage} isError={true} />
+                <ShowMensaje mensaje={successMessage} isError={false} />
 
                 <div>
                     <button

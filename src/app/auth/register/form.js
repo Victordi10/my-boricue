@@ -115,7 +115,7 @@ const SignUp = ({  }) => {
             if (data.success && data.data.token) {
                 localStorage.setItem("token", data.data.token); // Guardar el token en localStorage
                 setUserId(data.data.userId)
-                router.replace(`/dashboard/dashboards`)
+                router.replace(`/dashboard/dashboard`)
                 setMensaje("Registro exitoso")
             } else {
                 // Manejar error
