@@ -6,15 +6,20 @@ export async function GET(req) {
         const url = new URL(req.url);
         const page = parseInt(url.searchParams.get("page") || "1");
         const limit = parseInt(url.searchParams.get("limit") || "8");
+        const search = url.searchParams.get("search") || null;
+        const categoria = url.searchParams.get("categoria") || null;
+        const material = url.searchParams.get("material") || null;
 
         // Validación de parámetros
         if (page < 1 || limit < 1 || limit > 50) {
             return errorResponse("Parámetros de paginación inválidos", 400);
         }
 
-        const productos = await getProductsWithPagination(page, limit);
+        const productos = await getProductsWithPagination(page, limit, search, categoria, material);
         const totalCount = await getTotalProductsCount();
         const totalPages = Math.ceil(totalCount / limit);
+
+        console.log("Productos:", productos);
 
         return successResponse('productos',{
             productos,

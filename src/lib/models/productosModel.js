@@ -14,26 +14,54 @@ export const getProductosUser = async (userId) => {
     }
 };
 
-// Get products with pagination
-export const getProductsWithPagination = async (page = 1, limit = 8) => {
+
+export const getProductsWithPagination = async (page = 1, limit = 8, search, categoria, material) => {
     try {
-        // Calculate offset for SQL query
         const offset = (page - 1) * limit;
 
-        // SQL query with pagination
-        const sql = `
-            SELECT * FROM producto
-            ORDER BY fecha DESC
-            LIMIT ? OFFSET ?
+        let sql = `
+            SELECT p.*
+            FROM producto p
+            JOIN usuarios u ON p.usuario_id = u.idUsuario
+            WHERE 1 = 1
         `;
 
-        const result = await db(sql, [limit, offset]);
+        const params = [];
+
+        // Filtro por búsqueda (nombre del producto o del usuario)
+        if (search) {
+            sql += ` AND (p.nombre LIKE ? OR u.nombres LIKE ?)`;
+            const searchTerm = `%${search}%`;
+            params.push(searchTerm, searchTerm);
+        }
+
+        // Filtro por categoría
+        if (categoria) {
+            sql += ` AND p.categoria = ?`;
+            params.push(categoria);
+        }
+
+        // Filtro por material
+        if (material) {
+            sql += ` AND p.tipo = ?`;
+            params.push(material);
+        }
+
+        // Ordenar y paginar
+        sql += `
+            ORDER BY p.fecha DESC
+            LIMIT ? OFFSET ?
+        `;
+        params.push(limit, offset);
+
+        const result = await db(sql, params);
         return result;
     } catch (error) {
-        console.error(`Error al cargar productos con paginación: ${error}`);
+        console.error(`Error al cargar productos con filtros y paginación: ${error}`);
         throw error;
     }
 };
+
 
 // Get total count of products for pagination
 export const getTotalProductsCount = async () => {
