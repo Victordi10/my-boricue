@@ -20,7 +20,8 @@ export const getProductsWithPagination = async (page = 1, limit = 8, search, cat
         const offset = (page - 1) * limit;
 
         let sql = `
-            SELECT p.*
+            SELECT p.*,
+                    u.nombres AS usuario, u.correo, u.urlImgPerfil AS imagenUsuario
             FROM producto p
             JOIN usuarios u ON p.usuario_id = u.idUsuario
             WHERE 1 = 1
