@@ -60,44 +60,6 @@ export default function Home() {
         </div>
       </Seccion>
 
-      {/* venta de material */}
-
-      <Seccion className={'space-x-0'}>
-
-  <div className="w-full flex flex-wrap justify-center items-start md:space-x-6 space-y-6 md:space-y-0">
-    <VentaCard
-      title={'Cartón'}
-      description={'Cartón en buen estado, sin haber sido usado anteriormente.'}
-      imageUrl={'/Carton.jpg'}
-      price={5} 
-      category="Venta"
-      actions={[
-        { label: "Comprar", onClick: () => console.log("Comprar") },
-        { label: "Añadir al carro", onClick: () => console.log("Carrito") }
-      ]}
-    />
-    <VentaCard
-      title={'Aluminio'}
-      description={'En todas sus presentaciones: latas, papel, todos los tipos son aceptados.'}
-      imageUrl={'/Aluminio.jpg'}
-      price={10} 
-      category="Intercambio"      
-      actions={[
-        { label: "Cambiar", onClick: () => console.log("Cambiar") }
-      ]}
-      />
-    <VentaCard
-      title={'Cuero'}
-      description={'Recortes de cuero, trozos de cuero o elementos de cuero que ya no sean de uso.'}
-      imageUrl={'/Cuero.jpeg'}
-      category="Donacion"      
-      actions={[
-        { label: "Gratis", onClick: () => alert("Descargado gratis") }
-      ]}
-      />
-  </div>
-</Seccion>
-
 
       <ContactSection />
 
