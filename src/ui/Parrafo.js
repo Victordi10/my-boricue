@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from "framer-motion"
 
 
 const Parrafo = ({ children, clas, color, textAlign, style  }) => {
