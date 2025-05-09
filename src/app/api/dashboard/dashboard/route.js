@@ -19,7 +19,6 @@ export async function GET(req) {
         const totalCount = await getTotalProductsCount();
         const totalPages = Math.ceil(totalCount / limit);
 
-        console.log("Productos:", productos);
 
         return successResponse('productos',{
             productos,
