@@ -46,7 +46,6 @@ const MATERIAL_ICONS = {
 
 export default function Products() {
     const { userId } = useGlobalState()
-    const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchOpen, setSearchOpen] = useState(false);
@@ -60,15 +59,34 @@ export default function Products() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalProducts, setTotalProducts] = useState(0);
+    const [allProducts, setAllProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [isFiltered, setIsFiltered] = useState(false);
+    const displayedProducts = isFiltered ? filteredProducts : allProducts;
+
+
     const productsPerPage = 8;
 
     useEffect(() => {
-        if (userId) {
-            fetchProducts();
+        if(userId){
+            const hasFilters = searchTerm || selectedCategory || selectedMaterial;
+        setIsFiltered(hasFilters);
+    
+        // Si hay filtros, realiza una solicitud para filtrarlos
+        if (hasFilters) {
+            fetchProductsFilter();
+        } else {
+            // Si no hay filtros, verifica si ya tienes los productos cargados
+            if (allProducts.length === 0) {
+                // Si no se han cargado, realiza la solicitud para obtener todos los productos
+                fetchAllProducts();
+            }
+        }
         }
     }, [currentPage, searchTerm, selectedCategory, selectedMaterial, userId]);
+    
 
-    const fetchProducts = async () => {
+    const fetchProductsFilter = async () => {
         setIsLoading(true);
         setError(null);
 
@@ -86,7 +104,44 @@ export default function Products() {
             const data = response.data;
 
             if (data.success) {
-                setProducts(data.data.productos || []);
+                setFilteredProducts(data.data.productos || []);
+                setTotalProducts(data.data.total || 0);
+                setTotalPages(data.data.totalPages || 1);
+            } else {
+                setError({
+                    message: data.message || 'Error al cargar los productos',
+                    variant: 'error'
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            setError({
+                message: 'No pudimos conectar con el servidor. Por favor, intenta nuevamente más tarde.',
+                variant: 'error'
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    const fetchAllProducts = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const response = await api.get('/api/dashboard/dashboard', {
+                params: {
+                    page: currentPage,
+                    limit: productsPerPage,
+                    search: null,
+                    categoria: null,
+                    material: null
+                }
+            });
+
+            const data = response.data;
+
+            if (data.success) {
+                setAllProducts(data.data.productos || []);
                 setTotalProducts(data.data.total || 0);
                 setTotalPages(data.data.totalPages || 1);
             } else {
@@ -205,7 +260,7 @@ export default function Products() {
                         <Loader />
                         <p>Cargando productos...</p>
                     </div>
-                ) : products && products.length > 0 ? (
+                ) : displayedProducts && displayedProducts.length > 0 ? (
                     <div className='w-full bg-fondo p-6'>
                         {/* Products count and page indicator */}
                         <div className="flex  flex-col sm:flex-row justify-between items-center mb-4">
@@ -219,7 +274,7 @@ export default function Products() {
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {products.map((product, index) => (
+                            {displayedProducts.map((product, index) => (
                                 <ProductCard
                                     key={product.id || index}
                                     product={product}
