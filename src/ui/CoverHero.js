@@ -37,7 +37,7 @@ const CoverHero = ({slides}) => {
     useEffect(() => {
         let intervalId
         if (isPlaying) {
-            intervalId = setInterval(nextSlide, 5000) // Cambia cada 5 segundos
+            intervalId = setInterval(nextSlide, 3000) // Cambia cada 5 segundos
         }
         return () => {
             if (intervalId) {

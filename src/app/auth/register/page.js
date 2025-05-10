@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { UserPlus, LogIn } from 'lucide-react'
 
-import SignUp from './form.js'
+import SignUpForm from './form.js'
 
 const Register = () => {
     const [error, setError] = useState('')
@@ -19,7 +19,7 @@ const Register = () => {
                     <motion.div
                         className="w-full"
                     >
-                        <SignUp setError={setError}/>
+                        <SignUpForm setError={setError}/>
                     </motion.div>
                 </AnimatePresence>
             </div>
