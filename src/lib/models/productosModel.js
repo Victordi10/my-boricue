@@ -56,6 +56,7 @@ export const getProductsWithPagination = async (page = 1, limit = 8, search, cat
         params.push(limit, offset);
 
         const result = await db(sql, params);
+        console.log('result', result);
         return result;
     } catch (error) {
         console.error(`Error al cargar productos con filtros y paginación: ${error}`);

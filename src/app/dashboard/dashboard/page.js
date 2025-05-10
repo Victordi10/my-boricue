@@ -2,8 +2,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import {
     Tag,
     Heart,
@@ -25,6 +23,7 @@ import Titulo from '@/ui/Titulo';
 import Parrafo from '@/ui/Parrafo';
 import Loader from '@/components/Loader';
 import { useGlobalState } from '@/context/GlobalStateContext';
+import { materiales } from '@/const/materiales';
 
 // Category icons mapping
 const CATEGORY_ICONS = {
@@ -50,6 +49,7 @@ export default function Products() {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchOpen, setSearchOpen] = useState(false);
 
     // Filter states
     const [searchTerm, setSearchTerm] = useState('');
@@ -134,6 +134,10 @@ export default function Products() {
         setCurrentPage(1);
     };
 
+    const handleSearchToggle = () => {
+        setSearchOpen(!searchOpen);
+    }
+
     const getCategoryDisplay = (category) => {
         return (
             <span className="inline-flex items-center">
@@ -170,23 +174,16 @@ export default function Products() {
                     onCategoryChange={handleCategoryChange}
                     onMaterialChange={handleMaterialChange}
                     onClearFilters={clearFilters}
+                    handleSearchToggle={handleSearchToggle}
+                    setSearchOpen={setSearchOpen}
+                    searchOpen={searchOpen}
                     categories={[
                         { value: '', label: 'Todas las categorías' },
                         { value: 'venta', label: 'Venta' },
                         { value: 'donacion', label: 'Donación' },
                         { value: 'intercambio', label: 'Intercambio' }
                     ]}
-                    materials={[
-                        { value: '', label: 'Todos los materiales' },
-                        { value: 'carton', label: 'Cartón' },
-                        { value: 'aluminio', label: 'Aluminio' },
-                        { value: 'plastico', label: 'Plástico' },
-                        { value: 'vidrio', label: 'Vidrio' },
-                        { value: 'textil', label: 'Textil' },
-                        { value: 'madera', label: 'Madera' },
-                        { value: 'papel', label: 'Papel' },
-                        { value: 'otros', label: 'Otros' }
-                    ]}
+                    materials={materiales}
                 />
             </section>
 

@@ -10,6 +10,8 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
         day: 'numeric',
         month: 'short',
     });
+
+    console.log('product', product);
     
     // Determine button text and icon based on category
     const getActionButton = () => {

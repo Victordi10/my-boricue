@@ -10,7 +10,10 @@ const ProductFilter = ({
     onMaterialChange,
     onClearFilters,
     categories,
-    materials
+    materials,
+    handleSearchToggle,
+    searchOpen,
+    setSearchOpen
 }) => {
     const hasActiveFilters = searchTerm || selectedCategory || selectedMaterial;
 
@@ -19,7 +22,7 @@ const ProductFilter = ({
             <div className="bg-white p-4 rounded-lg shadow-md">
                 <div className="flex flex-col md:flex-row gap-4">
                     {/* Search input */}
-                    <div className="relative flex-grow">
+                    <div className="relative flex-grow" onClick={() => setSearchOpen(true)}>
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Search className="h-5 w-5 text-gray-400" />
                         </div>
@@ -35,36 +38,47 @@ const ProductFilter = ({
                                 onClick={() => onSearchChange('')}
                                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                             >
-                                <X className="h-4 w-4" />
+                                <X className="h-4 w-4 text-gray-400" />
                             </button>
                         )}
                     </div>
 
                     {/* Category filter */}
-                    <select
-                        value={selectedCategory}
-                        onChange={(e) => onCategoryChange(e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dos focus:border-transparent"
-                    >
-                        {categories.map((category) => (
-                            <option key={category.value} value={category.value}>
-                                {category.label}
-                            </option>
-                        ))}
-                    </select>
+                    {searchOpen && (
+                        <>
+                            <button
+                                onClick={() => setSearchOpen(false)}
+                                className=" p-1 flex items-center text-gray-400 text-sm hover:text-gray-600"
+                            >
+                                Cerrar
+                            </button>
 
-                    {/* Material filter */}
-                    <select
-                        value={selectedMaterial}
-                        onChange={(e) => onMaterialChange(e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dos focus:border-transparent"
-                    >
-                        {materials.map((material) => (
-                            <option key={material.value} value={material.value}>
-                                {material.label}
-                            </option>
-                        ))}
-                    </select>
+                            <select
+                                value={selectedCategory}
+                                onChange={(e) => onCategoryChange(e.target.value)}
+                                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dos focus:border-transparent"
+                            >
+                                {categories.map((category) => (
+                                    <option key={category.value} value={category.value}>
+                                        {category.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            {/* Material filter */}
+                            <select
+                                value={selectedMaterial}
+                                onChange={(e) => onMaterialChange(e.target.value)}
+                                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-dos focus:border-transparent"
+                            >
+                                {materials.map((material) => (
+                                    <option key={material.value} value={material.value}>
+                                        {material.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </>
+                    )}
 
                     {/* Clear filters button */}
                     {hasActiveFilters && (

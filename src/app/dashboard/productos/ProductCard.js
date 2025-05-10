@@ -11,6 +11,8 @@ import EditPostButton from './editProducto';
 const ProductCard = ({ product, onDelete, setProductSelect, handleOpen }) => {
     const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
+    
+    console.log('product', product);
 
     const handleEdit = () => {
         setProductSelect(product)
@@ -38,7 +40,7 @@ const ProductCard = ({ product, onDelete, setProductSelect, handleOpen }) => {
                 {/* Imagen del producto */}
                 <div className="h-full w-full relative">
                     <Image
-                        src={product.imagenUsuario}
+                        src={product.imagen}
                         alt={product.nombre}
                         fill
                         className="object-cover transition-transform duration-500 ease-in-out"

@@ -99,7 +99,7 @@ export default function MisPublicaciones() {
     const handleClose = () => setIsModalOpen(false);
 
     return (
-        <div className="min-h-screen w-full bg-gray-50">
+        <div className="min-h-screen w-full ">
             {/* Encabezado con degradado */}
             <div className="bg-gradient-to-r max-w-6xl mx-auto w-full from-dos to-divisiones p-6">
                 <Parrafo clas="text-white text-opacity-90 text-center mt-2 max-w-2xl mx-auto">

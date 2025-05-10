@@ -7,7 +7,7 @@ import Aside from './aside'
 
 export default function RootLayout({ children }) {
     return (
-        <div className="flex min-h-screen bg-gray-50">
+        <div className="flex min-h-screen bg-fondo w-full">
             <Aside />
 
             {/* Contenido principal con margen para el sidebar */}
