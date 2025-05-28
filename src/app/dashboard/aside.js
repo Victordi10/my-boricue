@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 export default function Aside() {
     const router = useRouter()
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { userId, setUserId } = useGlobalState();
+    const { userId, setUserId, chatOpen, setChatOpen } = useGlobalState();
 
     const handleLogout = () => {
         router.push('/auth/login');
@@ -42,7 +42,7 @@ export default function Aside() {
         },
         {
             label: "Chat",
-            path: "/dashboard/chat",
+            onClick: ()=> setChatOpen(true),
             icon: <MessageCircle className="mr-3 h-5 w-5 text-dos" />
         },
         {

@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import Aside from './aside'
+import Chat from "./chat/Chat";
 
 
 export default function RootLayout({ children }) {
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
             <main className="flex flex-col w-full mt-16 md:mt-0 md:ml-56 p-4 ">
                 {children}
             </main>
+            <Chat />
         </div>
     );
 }
