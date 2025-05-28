@@ -3,60 +3,16 @@
 import React, { useState } from 'react';
 import Avatar from './Avatar';
 
-// /src/data/mockData.js
-export const mockChats = [
-    {
-        id: 1,
-        name: "Juan Pérez",
-        avatar: "https://i.pravatar.cc/150?img=1",
-        lastMessage: "¿Cómo estás hoy?",
-        lastMessageTime: "10:30",
-        unreadCount: 2,
-    },
-    {
-        id: 2,
-        name: "María García",
-        avatar: "https://i.pravatar.cc/150?img=5",
-        lastMessage: "¿Nos vemos mañana?",
-        lastMessageTime: "09:15",
-        unreadCount: 0,
-    },
-    {
-        id: 3,
-        name: "Carlos López",
-        avatar: "https://i.pravatar.cc/150?img=8",
-        lastMessage: "Revisa el documento que te envié",
-        lastMessageTime: "Ayer",
-        unreadCount: 0,
-    },
-    {
-        id: 4,
-        name: "Ana Martínez",
-        avatar: "https://i.pravatar.cc/150?img=9",
-        lastMessage: "Gracias por la ayuda",
-        lastMessageTime: "Ayer",
-        unreadCount: 0,
-    },
-    {
-        id: 5,
-        name: "Pedro Rodríguez",
-        avatar: "https://i.pravatar.cc/150?img=3",
-        lastMessage: "¿Listo para la reunión?",
-        lastMessageTime: "Lunes",
-        unreadCount: 0,
-    },
-];
 
-
-const ChatList = ({ onSelectChat, selectedChatId }) => {
+const ChatList = ({ onSelectChat, selectedChatId, chats }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredChats = mockChats.filter(chat =>
+    const filteredChats = chats.filter(chat =>
         chat.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
-        <div className="flex flex-col h-full bg-white border-r border-divisiones">
+        <div className="flex flex-col h-full bg-white border-r border-divisiones overflow-hidden">
             <div className="p-3 bg-uno">
                 <div className="relative">
                     <input
@@ -83,7 +39,7 @@ const ChatList = ({ onSelectChat, selectedChatId }) => {
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 h-full overflow-y-auto">
                 {filteredChats.length > 0 ? (
                     filteredChats.map(chat => (
                         <div

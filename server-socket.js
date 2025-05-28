@@ -8,7 +8,7 @@ const port = 4000; // puerto distinto al 3000 de Next.js
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3000", // tu app Next.js
+        origin: process.env.NEXT_PUBLIC_API_URL, // tu app Next.js
         methods: ["GET", "POST"],
     },
 });

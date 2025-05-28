@@ -36,8 +36,8 @@ export default function Aside() {
 
     const menuItems = [
         {
-            label: "Dashboard",
-            path: "/dashboard/dashboard",
+            label: "home",
+            path: "/dashboard/home",
             icon: <LayoutDashboard className="mr-3 h-5 w-5 text-dos" />
         },
         {

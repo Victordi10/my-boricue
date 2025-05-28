@@ -1,166 +1,101 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChatList from '@/components/chat/ChatList';
 import ChatHeader from '@/components/chat/ChatHeader';
 import MessageList from '@/components/chat/MessageList';
 import MessageInput from '@/components/chat/MessageInput';
 import { useGlobalState } from '@/context/GlobalStateContext';
 import { ChatModal } from '@/ui/Modal';
+import { io } from "socket.io-client";
+import api from '@/services/axiosInstance';
 
-// /src/data/mockData.js
-export const mockChats = [
-    {
-        id: 1,
-        name: "Juan Pérez",
-        avatar: "https://i.pravatar.cc/150?img=1",
-        lastMessage: "¿Cómo estás hoy?",
-        lastMessageTime: "10:30",
-        unreadCount: 2,
-    },
-    {
-        id: 2,
-        name: "María García",
-        avatar: "https://i.pravatar.cc/150?img=5",
-        lastMessage: "¿Nos vemos mañana?",
-        lastMessageTime: "09:15",
-        unreadCount: 0,
-    },
-    {
-        id: 3,
-        name: "Carlos López",
-        avatar: "https://i.pravatar.cc/150?img=8",
-        lastMessage: "Revisa el documento que te envié",
-        lastMessageTime: "Ayer",
-        unreadCount: 0,
-    },
-    {
-        id: 4,
-        name: "Ana Martínez",
-        avatar: "https://i.pravatar.cc/150?img=9",
-        lastMessage: "Gracias por la ayuda",
-        lastMessageTime: "Ayer",
-        unreadCount: 0,
-    },
-    {
-        id: 5,
-        name: "Pedro Rodríguez",
-        avatar: "https://i.pravatar.cc/150?img=3",
-        lastMessage: "¿Listo para la reunión?",
-        lastMessageTime: "Lunes",
-        unreadCount: 0,
-    },
-];
 
-export const mockMessages = [
-    {
-        id: 1,
-        chatId: 1,
-        sender: "Juan Pérez",
-        avatar: "https://i.pravatar.cc/150?img=1",
-        content: "Hola, ¿cómo estás?",
-        timestamp: "10:15",
-        isOwn: false,
-    },
-    {
-        id: 2,
-        chatId: 1,
-        sender: "Tú",
-        content: "¡Bien! ¿Y tú?",
-        timestamp: "10:16",
-        isOwn: true,
-    },
-    {
-        id: 3,
-        chatId: 1,
-        sender: "Juan Pérez",
-        avatar: "https://i.pravatar.cc/150?img=1",
-        content: "Todo muy bien, gracias por preguntar",
-        timestamp: "10:18",
-        isOwn: false,
-    },
-    {
-        id: 4,
-        chatId: 1,
-        sender: "Juan Pérez",
-        avatar: "https://i.pravatar.cc/150?img=1",
-        content: "Mira esta foto que tomé ayer",
-        img: "https://picsum.photos/400/300",
-        timestamp: "10:20",
-        isOwn: false,
-    },
-    {
-        id: 5,
-        chatId: 1,
-        sender: "Tú",
-        content: "¡Qué bonita! ¿Dónde es?",
-        timestamp: "10:25",
-        isOwn: true,
-    },
-    {
-        id: 6,
-        chatId: 1,
-        sender: "Juan Pérez",
-        avatar: "https://i.pravatar.cc/150?img=1",
-        content: "En el parque cerca de mi casa",
-        timestamp: "10:30",
-        isOwn: false,
-    },
-    {
-        id: 7,
-        chatId: 1,
-        sender: "Tú",
-        content: "Aquí te envío una imagen del viaje",
-        img: "https://picsum.photos/400/250",
-        timestamp: "10:32",
-        isOwn: true,
-    },
-];
-import Modal from "@/ui/Modal";
+
 
 
 const Chat = () => {
-    const { chatOpen, setChatOpen } = useGlobalState();
-    const [selectedChatId, setSelectedChatId] = useState(null);
-    const [messages, setMessages] = useState(mockMessages);
+
+    const { chatOpen, setChatOpen, userId } = useGlobalState();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [socket, setSocket] = useState(null);
+    const [chats, setChats] = useState([]);
+    const [selectedChatId, setSelectedChatId] = useState(null);
+    const [message, setMessage] = useState('');
+    const selectedChat = chats.find(chat => chat.id === selectedChatId);
 
-    const selectedChat = mockChats.find(chat => chat.id === selectedChatId);
-
-    const handleSendMessage = (content) => {
-        if (!selectedChatId) return;
-
-        const newMessage = {
-            id: messages.length + 1,
-            chatId: selectedChatId,
-            sender: 'Tú',
-            content,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            isOwn: true
+    useEffect(() => {
+        const cargarChats = async () => {
+            try {
+                const response = await api.get(`/api/dashboard/chat/${userId}`);
+                const data = await response.data.data;
+                setChats(data);
+            } catch (error) {
+                console.error("Error al obtener chats:", error);
+            }
         };
 
-        setMessages([...messages, newMessage]);
+        if (userId) {
+            cargarChats();
+        }
+    }, [userId]);
+
+    useEffect(() => {
+        const socketIo = io("http://localhost:4000"); // conecta al server Socket.IO separado
+        setSocket(socketIo);
+
+        socketIo.on("receive-message", (msg) => {
+            setChats((prev) => [...prev, msg]);
+        });
+
+        return () => {
+            socketIo.disconnect();
+        };
+    }, []);
+
+    const sendMessage = () => {
+        if (socket && message.trim() !== "") {
+            socket.emit("send-message", message);
+            setChats((prev) => [...prev, message]);
+            setMessage("");
+        }
     };
+
+    /*     const handleSendMessage = (content) => {
+            if (!selectedChatId) return;
+    
+            const newMessage = {
+                id: messages.length + 1,
+                chatId: selectedChatId,
+                sender: 'Tú',
+                content,
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                isOwn: true
+            };
+    
+            setMessages([...messages, newMessage]);
+        }; */
 
     const handleSelectChat = (chatId) => {
         setSelectedChatId(chatId);
         setIsMobileMenuOpen(false);
     };
     return (
-        <ChatModal isOpen={chatOpen} onClose={() => { setChatOpen(false) }} title="Chat">
+        <ChatModal isOpen={chatOpen} onClose={() => { setChatOpen(false) }}>
             <div className='flex h-screen bg-fondo'>
                 {/* Chat list sidebar - hidden on mobile by default */}
                 <div
                     className={`${isMobileMenuOpen ? "block" : "hidden"
-                        } md:block md:w-1/3 lg:w-1/4 h-full`}
+                        } md:block md:w-[40%] lg:w-1/3 h-full`}
                 >
                     <ChatList
                         onSelectChat={handleSelectChat}
                         selectedChatId={selectedChatId}
+                        chats={chats}
                     />
                 </div>
 
                 {/* Chat messages area */}
-                <div className="flex-1 flex flex-col h-full">
+                <div className="flex-1 flex flex-col h-full overflow-y-auto">
                     {selectedChat ? (
                         <>
                             <div className="flex items-center md:hidden">

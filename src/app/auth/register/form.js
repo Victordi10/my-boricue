@@ -122,7 +122,7 @@ const SignUpForm = () => {
             if (data.success && data.data.token) {
                 localStorage.setItem("token", data.data.token)
                 setUserId(data.data.userId)
-                router.replace(`/dashboard/dashboard`)
+                router.replace(`/dashboard/home`)
                 setMensaje("Registro exitoso")
             } else {
                 setMensaje('Ocurrio un error inesperado')

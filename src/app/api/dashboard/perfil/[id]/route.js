@@ -1,8 +1,5 @@
 import { errorResponse, successResponse, handleImageUpload, eliminarImgAnterior } from '@/utils/handler';
 import { getUser, actualizarPerfil } from '@/lib/models/perfilModel';
-import { writeFile } from 'fs/promises';
-import path from 'path';
-import { v4 as uuid } from 'uuid'; // npm install uuid
 import { authMiddleware } from "@/middleware/authMiddleware";
 
 // Ruta POST para login

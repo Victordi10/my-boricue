@@ -43,7 +43,7 @@ const SignIn = ({ }) => {
                 setUserId(data.data.userId);
                 setSuccessMessage("Ingreso exitoso. Redirigiendo...");
                 setTimeout(() => {
-                router.replace(`/dashboard/dashboard`);
+                router.replace(`/dashboard/home`);
                 }, 2000); // Espera 2 segundos
                 // Redirigir al dashboard
                 //console.log('Inicio sesion', data.data.token)

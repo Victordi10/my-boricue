@@ -91,7 +91,7 @@ export default function Products() {
         setError(null);
 
         try {
-            const response = await api.get('/api/dashboard/dashboard', {
+            const response = await api.get('/api/dashboard/home', {
                 params: {
                     page: currentPage,
                     limit: productsPerPage,
@@ -128,7 +128,7 @@ export default function Products() {
         setError(null);
 
         try {
-            const response = await api.get('/api/dashboard/dashboard', {
+            const response = await api.get('/api/dashboard/home', {
                 params: {
                     page: currentPage,
                     limit: productsPerPage,
