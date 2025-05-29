@@ -6,21 +6,17 @@ const getHandler = async (req, contextPromise) => {
     try {
         const context = await contextPromise;
         const { userId } = context.params;
-        console.log("ID de usuario recibido:", userId);
+
         if (!userId) {
-            return errorResponse("falta el id de usuario", 401);
+            return errorResponse("🔐 Falta el ID del usuario", 400);
         }
 
         const chats = await obtenerChats(userId);
-        console.log("Chats obtenidos:", chats);
-        if (!chats || chats.length === 0) {
-            return errorResponse("No se encontraron chats para este usuario", 404);
-        }
 
-        return successResponse("Chats encontrados", chats);
+        return successResponse("✅ Chats encontrados", chats);
     } catch (error) {
-        console.error("Error en loginUser:", error);
-        return errorResponse("Ocurrió un error al intentar obtener el usuario", 500);
+        console.error("🚨 Error en getHandler (GET /chat/[userId]):", error);
+        return errorResponse("Ocurrió un error al intentar obtener los chats", 500);
     }
 }
 

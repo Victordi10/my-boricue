@@ -38,9 +38,9 @@ export function ChatModal({ isOpen, onClose, tamaño = 'md', children }) {
 
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-2">
-            <div className="bg-white rounded-xl shadow-lg w-full h-screen overflow-hidden">
+            <div className="bg-white rounded-xl shadow-lg w-full h-[97vh] min-h-[400px] overflow-hidden">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-dos to-divisiones p-3 px-4 flex justify-between items-center">
+                <div className="bg-gradient-to-r from-dos to-divisiones p-3 flex justify-between items-center">
                     <h2 className="text-lg font-bold text-white">
                         Chat boricue
                     </h2>
@@ -53,7 +53,7 @@ export function ChatModal({ isOpen, onClose, tamaño = 'md', children }) {
                 </div>
 
                 {/* Body (scrollable) */}
-                <div className="p-2 overflow-hidden w-full max-h-[90%]">
+                <div className="overflow-hidden w-full h-full max-h-[90%]">
                     {children}
                 </div>
             </div>

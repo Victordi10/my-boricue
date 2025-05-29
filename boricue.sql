@@ -123,13 +123,18 @@ DELIMITER ;
 -- 7. Tabla: chats
 -- ----------------------------
 CREATE TABLE `chats` (
-  `id` int(50) NOT NULL AUTO_INCREMENT,
-  `mensaje` text NOT NULL,
-  `fecha` datetime DEFAULT current_timestamp(),
-  `idEmisor` int(11) NOT NULL,
-  `idReceptor` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `mensaje` TEXT,
+  `url_archivo` TEXT,
+  `tipo_contenido` ENUM('texto', 'imagen', 'archivo', 'mixto') DEFAULT 'texto',
+  `fecha` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `idEmisor` INT NOT NULL,
+  `idReceptor` INT NOT NULL,
+  FOREIGN KEY (`idEmisor`) REFERENCES `usuarios`(`idUsuario`) ON DELETE CASCADE,
+  FOREIGN KEY (`idReceptor`) REFERENCES `usuarios`(`idUsuario`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 INSERT INTO `chats` (`id`, `mensaje`, `fecha`, `idEmisor`, `idReceptor`) VALUES
 (1, 'hola 1', '2024-10-26 00:00:00', 1, 2),

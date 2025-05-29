@@ -2,8 +2,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, MessageCircle, ShoppingCart, Tag, Gift, RefreshCw, Clock, User } from 'lucide-react';
+import { useGlobalState } from '@/context/GlobalStateContext';
 
 const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }) => {
+    const { setChatOpen, chatData, setChatData } = useGlobalState();
     const userIdNum = Number(userId);
     const isMyProduct = product.usuario_id === userIdNum;
     const formattedDate = new Date(product.fecha).toLocaleDateString('es-ES', {
@@ -12,7 +14,7 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
     });
 
     console.log('product', product);
-    
+
     // Determine button text and icon based on category
     const getActionButton = () => {
         switch (product.categoria?.toLowerCase()) {
@@ -59,6 +61,41 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
         }
     };
 
+    const handleSendMessage = () => {
+        setChatOpen(true);
+        const chatData = {
+            idEmisor: userId,
+            idReceptor: product.usuario_id,
+            name: product.usuario,
+            avatar: product.imagenUsuario || '/LogoBoricue.png',
+            productoId: product.id,
+            productoNombre: product.nombre,
+            productoImagen: product.imagen || '/LogoBoricue.png',
+            productoCategoria: product.categoria,
+            productoPrecio: product.precio,
+        }
+        setChatData(chatData);
+        // Implement message sending logic here
+        console.log('Send message to:', product.usuario_id);
+    }
+
+    /* const handleSendMessage = async () => {
+        try {
+            const response = await api.post('/api/chat/start', {
+                emisorId: userId,
+                receptorId: product.usuario_id,
+                productoId: product.id,
+            });
+    
+            const chat = response.data; // Asegúrate que incluye `id`, `name`, `avatar`, etc.
+            setChatData(chat);
+            setChatOpen(true);
+        } catch (error) {
+            console.error("Error al iniciar el chat:", error);
+        }
+    }; */
+
+
     return (
         <div className="group bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl border border-gray-100">
             {/* Product Badge */}
@@ -97,13 +134,13 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
                     {!isMyProduct && (
                         <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center">
                             <div className="flex space-x-3 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                                <Link
-                                    href={`/chat?R=${product.usuario_id}`}
+                                <button
+                                    onClick={handleSendMessage}
                                     className="bg-white text-dos p-3 rounded-full hover:bg-dos hover:text-white transition-colors duration-300 block"
                                     title="Chatear con vendedor"
                                 >
                                     <MessageCircle className="h-5 w-5" />
-                                </Link>
+                                </button>
                                 <button
                                     className="bg-white text-dos p-3 rounded-full hover:bg-dos hover:text-white transition-colors duration-300"
                                     title="Añadir a favoritos"
@@ -120,12 +157,12 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
             <div className="p-5">
                 <h3 className="text-xl font-semibold text-texto mb-2 line-clamp-1">{product.nombre}</h3>
                 <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.descripcion}</p>
-                
+
                 {/* User Info Section */}
                 <div className="flex items-center mb-4 pb-3 border-b border-gray-100">
                     <div className="relative h-10 w-10 mr-3 rounded-full overflow-hidden">
-                        <Image 
-                            src={product?.imagenUsuario} 
+                        <Image
+                            src={product?.imagenUsuario}
                             alt={product.usuario}
                             className="object-cover"
                             fill
@@ -140,14 +177,14 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
                         </div>
                     </div>
                 </div>
-                
+
                 <div className="flex justify-between items-center">
                     <span className="text-dos font-bold text-lg">
                         {product.categoria?.toLowerCase() === 'donacion'
                             ? 'Gratis'
-                            : product.precio 
-                              ? `$${Number(product.precio).toLocaleString()}`
-                              : 'Consultar precio'}
+                            : product.precio
+                                ? `$${Number(product.precio).toLocaleString()}`
+                                : 'Consultar precio'}
                     </span>
                     {!isMyProduct && getActionButton()}
                 </div>

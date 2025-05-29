@@ -1,45 +1,100 @@
-// /src/components/chat/Message.jsx
 import React from 'react';
 import Avatar from './Avatar';
 
-const Message = ({ message }) => {
-    const messageClasses = message.isOwn
-        ? "bg-dos text-white rounded-tl-lg rounded-tr-lg rounded-bl-lg ml-auto"
-        : "bg-uno text-texto rounded-tl-lg rounded-tr-lg rounded-br-lg";
+const Message = ({ message, userId }) => {
+    const isOwn = message.idEmisor === userId;
 
-    const wrapperClasses = message.isOwn
-        ? "flex flex-col items-end"
-        : "flex flex-col items-start";
+    // Función para formatear la fecha de manera más legible
+    const formatTimestamp = (timestamp) => {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diff = now - date;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 1) return 'Ahora';
+        if (minutes < 60) return `${minutes}m`;
+        if (hours < 24) return `${hours}h`;
+        if (days < 7) return `${days}d`;
+
+        return date.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    const messageClasses = isOwn
+        ? "bg-dos text-white shadow-md shadow-dos/20 rounded-2xl rounded-br-md ml-auto transform transition-all duration-200 hover:shadow-md hover:shadow-dos/30"
+        : "bg-uno text-texto shadow-md shadow-uno/20 rounded-2xl rounded-bl-md transform transition-all duration-200 hover:shadow-md hover:shadow-uno/30";
+
+    const wrapperClasses = isOwn
+        ? "flex flex-col items-end animate-fade-in-right"
+        : "flex flex-col items-start animate-fade-in-left";
 
     return (
-        <div className={`mb-4 max-w-[80%] ${wrapperClasses}`}>
-            {!message.isOwn && (
-                <div className="flex items-center mb-1">
-                    <Avatar src={message.avatar} alt={message.sender} size="sm" />
-                    <span className="ml-2 text-xs font-medium text-gray-600">{message.sender}</span>
+        <div className={`mb-6 max-w-[85%] sm:max-w-[75%] ${wrapperClasses}`}>
+            {!isOwn && (
+                <div className="flex items-center mb-2 ml-1">
+                    <div className="relative">
+                        <Avatar src={message.avatar} alt={message.name} size="sm" />
+                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
+                    </div>
+                    <span className="ml-3 text-sm font-semibold text-gray-700 tracking-wide">
+                        {message.name}
+                    </span>
                 </div>
             )}
 
-            <div className={`p-3 ${messageClasses}`}>
-                <p className="break-words">{message.content}</p>
-
-                {/* Si hay una imagen, la mostramos */}
-                {message.img && (
-                    <div className="mt-2 rounded-lg overflow-hidden">
-                        <img
-                            src={message.img}
-                            alt="Imagen adjunta"
-                            className="w-full h-auto max-h-60 object-cover"
-                        />
-                    </div>
+            <div className={`relative px-4 py-3 ${messageClasses} backdrop-blur-sm`}>
+                {/* Indicador de mensaje propio */}
+                {isOwn && (
+                    <div className="absolute -right-1 bottom-3 w-0 h-0 border-l-[8px] border-l-dos border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent"></div>
                 )}
 
-                <div className={`text-xs mt-1 ${message.isOwn ? 'text-gray-200' : 'text-gray-500'} text-right`}>
-                    {message.timestamp}
+                {/* Indicador de mensaje de otros */}
+                {!isOwn && (
+                    <div className="absolute -left-1 bottom-3 w-0 h-0 border-r-[8px] border-r-uno border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent"></div>
+                )}
+
+                <div className="relative z-10">
+                    <p className="break-words leading-relaxed text-[15px]">
+                        {message.content}
+                    </p>
+
+                    {message.img && (
+                        <div className="mt-3 rounded-xl overflow-hidden bg-black/5 p-1">
+                            <img
+                                src={message.img}
+                                alt="Imagen adjunta"
+                                className="w-full h-auto max-h-72 object-cover rounded-lg transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
+                                onClick={() => window.open(message.img, '_blank')}
+                            />
+                        </div>
+                    )}
+
+                    <div className={`flex items-center gap-2 mt-2 ${isOwn ? 'justify-end' : 'justify-start'}`}>
+                        <span className={`text-xs font-medium tracking-wide ${isOwn
+                                ? 'text-white/70'
+                                : 'text-gray-500'
+                            }`}>
+                            {formatTimestamp(message.timestamp)}
+                        </span>
+
+                        {/* Estado de mensaje (solo para mensajes propios) */}
+                        {isOwn && (
+                            <div className="flex space-x-0.5">
+                                <div className="w-1 h-1 bg-white/60 rounded-full"></div>
+                                <div className="w-1 h-1 bg-white/60 rounded-full"></div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Message
+export default Message;

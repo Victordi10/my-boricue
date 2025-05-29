@@ -8,6 +8,7 @@ export function GlobalStateProvider({ children }) {
     const [userId, setUserId] = useState(null);
     const [theme, setTheme] = useState('light');
     const [chatOpen, setChatOpen] = useState(false);
+    const [chatData, setChatData] = useState(null);
 
     // 🔁 Sincronizar el userId con localStorage al cargar
     useEffect(() => {
@@ -26,7 +27,7 @@ export function GlobalStateProvider({ children }) {
 
 
     return (
-        <GlobalStateContext.Provider value={{ userId, setUserId, theme, setTheme, chatOpen, setChatOpen }}>
+        <GlobalStateContext.Provider value={{ userId, setUserId, chatData, setChatData, chatOpen, setChatOpen }}>
             {children}
         </GlobalStateContext.Provider>
     );

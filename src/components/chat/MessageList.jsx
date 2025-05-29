@@ -2,24 +2,31 @@
 import React, { useEffect, useRef } from 'react';
 import Message from './Message';
 
-const MessageList = ({ chatId }) => {
+const MessageList = ({ userId, receiverId, messages }) => {
     const messagesEndRef = useRef(null);
 
-    // Filtrar mensajes por chatId
-    const messages = mockMessages.filter(message => message.chatId === chatId);
+    const filteredMessages = messages.filter(
+        message =>
+            (message.idEmisor === userId && message.idReceptor === receiverId) ||
+            (message.idEmisor === receiverId && message.idReceptor === userId)
+    );
 
-    // Hacer scroll automático hacia el último mensaje
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    }, [filteredMessages]);
 
     return (
         <div className="flex-1 p-4 overflow-y-auto bg-white">
-            {messages.length > 0 ? (
+            {filteredMessages.length > 0 ? (
                 <>
-                    {messages.map(message => (
-                        <Message key={message.id} message={message} />
+                    {filteredMessages.map(message => (
+                        <Message
+                            key={message.id || message.timestamp}
+                            message={message}
+                            userId={userId}
+                        />
                     ))}
+
                     <div ref={messagesEndRef} />
                 </>
             ) : (
