@@ -15,17 +15,27 @@ const Chat = () => {
     const [socket, setSocket] = useState(null);
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
-    const [selectedReceiverId, setSelectedReceiverId] = useState(null);
-    const selectedChat = chats.find(chat => chat.idReceptor === selectedReceiverId) || chatData;
+    const [selectedReceiverId, setSelectedReceiverId] = useState(chatData?.idContacto || null);
+    const selectedChat = chats.find(chat => chat.idContacto === selectedReceiverId) || chatData;
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (chatData) {
+            setSelectedReceiverId(chatData.idContacto);
+        }
+    }, [chatData]);
 
     useEffect(() => {
         const cargarChats = async () => {
+            setLoading(true);
             try {
                 const response = await api.get(`/api/dashboard/chat/${userId}`);
                 const data = await response.data.data;
                 setChats(data);
             } catch (error) {
                 console.error("Error al obtener chats:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -34,66 +44,82 @@ const Chat = () => {
         }
     }, [userId]);
 
-    useEffect(() => {
-        const cargarMensajesDelChat = async () => {
-            if (!selectedReceiverId) return;
-            try {
-                const res = await api.get(`/api/dashboard/chat/${userId}/${selectedReceiverId}/messages`);
-                setMessages(res.data);
-            } catch (err) {
-                console.error("Error al cargar mensajes del chat:", err);
-            }
-        };
 
-        cargarMensajesDelChat();
-    }, [selectedReceiverId]);
+
 
     useEffect(() => {
         const socketIo = io("http://localhost:4000");
-        setSocket(socketIo);
+
+        socketIo.on("connect", () => {
+            //console.log("🟢 Conectado a Socket.IO:", socketIo.id);
+        });
 
         socketIo.on("receive-message", (msg) => {
+            //console.log("📥 Mensaje recibido en cliente:", msg);
             setMessages((prev) => [...prev, msg]);
         });
+
+        socketIo.on("disconnect", () => {
+            console.log("🔴 Desconectado de Socket.IO");
+        });
+
+        setSocket(socketIo);
 
         return () => {
             socketIo.disconnect();
         };
     }, []);
 
-    const sendMessage = (text) => {
+
+
+    const sendMessage = (text, url_archivo) => {
         if (!socket || !text.trim()) return;
+
+        console.log("Socket conectado:", socket.connected);
 
         const receiverId =
             selectedChat.idEmisor === userId
-                ? selectedChat.idReceptor
+                ? selectedChat.idContacto
                 : selectedChat.idEmisor;
 
         const message = {
             idEmisor: userId,
             idReceptor: receiverId,
-            content: text,
-            timestamp: new Date().toISOString(),
-            tipo_contenido: 'texto',
+            mensaje: text,
+            url_archivo: url_archivo || null,
+            fecha: new Date().toISOString(),
         };
 
         socket.emit("send-message", message);
         setMessages((prev) => [...prev, message]);
 
         setChats((prevChats) => {
-            const updatedChats = prevChats.filter(
-                chat =>
-                    !(
-                        (chat.idEmisor === selectedChat.idEmisor &&
-                            chat.idReceptor === selectedChat.idReceptor) ||
-                        (chat.idEmisor === selectedChat.idReceptor &&
-                            chat.idReceptor === selectedChat.idEmisor)
-                    )
+            const receiverIdInt = parseInt(receiverId);
+
+            const chatYaExiste = prevChats.some(
+                (chat) => parseInt(chat.idContacto) === receiverIdInt
             );
 
-            return [selectedChat, ...updatedChats];
+            if (chatYaExiste) {
+                // No hacer nada si ya está el contacto en la lista
+                return prevChats;
+            }
+
+            /* const nuevoChat = {
+                idContacto: receiverId,
+                nombreContacto: selectedChat.nombreContacto,
+                avatar: selectedChat.avatar,
+                lastMessage: message.mensaje,
+                lastFile: message.url_archivo,
+                lastMessageTime: message.fecha,
+            };
+
+            return [nuevoChat, ...prevChats]; */
+            return
         });
     };
+
+
 
     const handleSelectChat = (chatId) => {
         setSelectedReceiverId(chatId);
@@ -125,7 +151,8 @@ const Chat = () => {
                     <ChatList
                         onSelectChat={handleSelectChat}
                         selectedReceiverId={selectedReceiverId}
-                        chats={chats}
+                        chats={chats || []}
+                        loading={loading}
                     />
                 </div>
 
@@ -164,8 +191,9 @@ const Chat = () => {
                                 <ChatHeader chat={selectedChat} />
                             </div>
 
-                            <MessageList userId={userId} receiverId={selectedReceiverId} messages={messages || []} />
-                            <MessageInput onSendMessage={sendMessage} />
+                            <MessageList userId={userId} selectedReceiverId={selectedReceiverId} messages={messages || []} setMessages={setMessages} avatarContact={selectedChat.avatar} />
+
+                            <MessageInput onSendMessage={sendMessage} productoImagen={selectedChat?.url_archivo} />
                         </>
                     ) : (
                         <div className="h-full flex flex-col">

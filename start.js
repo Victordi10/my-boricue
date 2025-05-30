@@ -18,7 +18,8 @@ function runProcess(command, args, name) {
 const nextProcess = runProcess("pnpm", ["next", "dev"], "Next.js");
 
 // Levantar servidor Socket.IO
-const socketProcess = runProcess("node", ["server-socket.js"], "Socket.IO");
+//const socketProcess = runProcess("node", ["src/services/server-socket.js"], "Socket.IO");
+const socketProcess = runProcess("node", ["--watch", "src/services/server-socket.js"], "Socket.IO");
 
 // Opcional: si cerrás la terminal, querés matar ambos procesos juntos
 process.on("SIGINT", () => {

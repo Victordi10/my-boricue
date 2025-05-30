@@ -2,32 +2,33 @@
 "use client";
 import React, { useState } from 'react';
 import Avatar from './Avatar';
+import Loader from '../Loader';
 
-const ChatList = ({ onSelectChat, selectedReceiverId, chats }) => {
+const ChatList = ({ onSelectChat, selectedReceiverId, chats, loading }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredChats = chats.filter(chat =>
-        chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+        chat.nombreContacto.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     // Función para formatear tiempo del último mensaje
     const formatLastMessageTime = (timestamp) => {
         if (!timestamp) return '';
-        
+
         const date = new Date(timestamp);
         const now = new Date();
         const diff = now - date;
         const minutes = Math.floor(diff / 60000);
         const hours = Math.floor(diff / 3600000);
         const days = Math.floor(diff / 86400000);
-        
+
         if (minutes < 1) return 'Ahora';
         if (minutes < 60) return `${minutes}m`;
         if (hours < 24) return `${hours}h`;
         if (days < 7) return `${days}d`;
-        
-        return date.toLocaleDateString('es-ES', { 
-            day: '2-digit', 
+
+        return date.toLocaleDateString('es-ES', {
+            day: '2-digit',
             month: '2-digit'
         });
     };
@@ -73,22 +74,25 @@ const ChatList = ({ onSelectChat, selectedReceiverId, chats }) => {
 
             {/* Lista de chats mejorada */}
             <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                {filteredChats.length > 0 ? (
+                {loading ? (
+                    <div className="flex items-center justify-center h-full">
+                        <Loader text='cargando chats...'/>
+                    </div>
+                ) : filteredChats.length > 0 ? (
                     <div className="divide-y divide-gray-100/70">
                         {filteredChats.map((chat, index) => (
                             <div
-                                key={chat.id}
-                                className={`relative flex items-center p-3 cursor-pointer transition-all duration-200 hover:bg-gradient-to-r hover:from-gray-50 hover:to-uno/10 group ${
-                                    selectedReceiverId === chat.idReceptor 
-                                        ? 'bg-gradient-to-r from-uno/20 to-uno/10 border-r-4 border-dos shadow-sm' 
+                                key={chat.idContacto}
+                                className={`relative flex items-center p-3 cursor-pointer transition-all duration-200 hover:bg-gradient-to-r hover:from-gray-50 hover:to-uno/10 group ${selectedReceiverId === chat.idContacto
+                                        ? 'bg-gradient-to-r from-uno/20 to-uno/10 border-r-4 border-dos shadow-sm'
                                         : ''
-                                }`}
-                                onClick={() => onSelectChat(chat.idReceptor)}
+                                    }`}
+                                onClick={() => onSelectChat(chat.idContacto)}
                                 style={{ animationDelay: `${index * 0.05}s` }}
                             >
-                                {/* Avatar con estado mejorado */}
+                                {/* Avatar */}
                                 <div className="relative flex-shrink-0">
-                                    <Avatar src={chat.avatar} alt={chat.name} />
+                                    <Avatar src={chat.avatar} alt={chat.nombreContacto} />
                                     <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-400 border-2 border-white rounded-full shadow-sm"></div>
                                 </div>
 
@@ -96,7 +100,7 @@ const ChatList = ({ onSelectChat, selectedReceiverId, chats }) => {
                                 <div className="ml-4 flex-1 min-w-0">
                                     <div className="flex justify-between items-start">
                                         <h3 className="font-semibold text-gray-900 truncate text-base group-hover:text-gray-800 transition-colors duration-200">
-                                            {chat.name}
+                                            {chat.nombreContacto}
                                         </h3>
                                         <div className="flex flex-col items-end space-y-1">
                                             <span className="text-xs text-gray-500 font-medium whitespace-nowrap">
@@ -111,16 +115,16 @@ const ChatList = ({ onSelectChat, selectedReceiverId, chats }) => {
                                             )}
                                         </div>
                                     </div>
-                                    
+
                                     <div className="flex items-center justify-between">
                                         <p className="text-sm text-gray-600 truncate flex-1 leading-relaxed group-hover:text-gray-700 transition-colors duration-200">
-                                            {chat.lastMessage || 'Sin mensajes'}
+                                            {chat.lastMessage || chat.lastFile || 'Sin mensajes'}
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Indicador de selección */}
-                                {selectedReceiverId === chat.idReceptor && (
+                                {selectedReceiverId === chat.idContacto && (
                                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-dos to-green-600 rounded-r-full"></div>
                                 )}
                             </div>
@@ -142,6 +146,7 @@ const ChatList = ({ onSelectChat, selectedReceiverId, chats }) => {
                     </div>
                 )}
             </div>
+
         </div>
     );
 };

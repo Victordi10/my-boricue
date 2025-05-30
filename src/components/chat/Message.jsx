@@ -1,8 +1,11 @@
 import React from 'react';
 import Avatar from './Avatar';
 
-const Message = ({ message, userId }) => {
-    const isOwn = message.idEmisor === userId;
+const Message = ({ message, userId, avatarContact }) => {
+    const isOwn = Number(message.idEmisor) === Number(userId);
+
+    
+    //console.log("Es propio:", isOwn);
 
     // Función para formatear la fecha de manera más legible
     const formatTimestamp = (timestamp) => {
@@ -39,11 +42,11 @@ const Message = ({ message, userId }) => {
             {!isOwn && (
                 <div className="flex items-center mb-2 ml-1">
                     <div className="relative">
-                        <Avatar src={message.avatar} alt={message.name} size="sm" />
+                        <Avatar src={avatarContact} alt={message.nombreContacto} size="sm" />
                         <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
                     </div>
                     <span className="ml-3 text-sm font-semibold text-gray-700 tracking-wide">
-                        {message.name}
+                        {message.nombreContacto}
                     </span>
                 </div>
             )}
@@ -61,16 +64,16 @@ const Message = ({ message, userId }) => {
 
                 <div className="relative z-10">
                     <p className="break-words leading-relaxed text-[15px]">
-                        {message.content}
+                        {message.mensaje}
                     </p>
 
-                    {message.img && (
+                    {message.url_archivo && (
                         <div className="mt-3 rounded-xl overflow-hidden bg-black/5 p-1">
                             <img
-                                src={message.img}
+                                src={message.url_archivo}
                                 alt="Imagen adjunta"
                                 className="w-full h-auto max-h-72 object-cover rounded-lg transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
-                                onClick={() => window.open(message.img, '_blank')}
+                                onClick={() => window.open(message.url_archivo, '_blank')}
                             />
                         </div>
                     )}
@@ -80,7 +83,7 @@ const Message = ({ message, userId }) => {
                                 ? 'text-white/70'
                                 : 'text-gray-500'
                             }`}>
-                            {formatTimestamp(message.timestamp)}
+                            {formatTimestamp(message.fecha)}
                         </span>
 
                         {/* Estado de mensaje (solo para mensajes propios) */}

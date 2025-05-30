@@ -13,7 +13,6 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
         month: 'short',
     });
 
-    console.log('product', product);
 
     // Determine button text and icon based on category
     const getActionButton = () => {
@@ -65,12 +64,12 @@ const ProductCard = ({ product, userId, getCategoryDisplay, getMaterialDisplay }
         setChatOpen(true);
         const chatData = {
             idEmisor: userId,
-            idReceptor: product.usuario_id,
-            name: product.usuario,
+            idContacto: product.usuario_id,
+            nombreContacto: product.usuario,
             avatar: product.imagenUsuario || '/LogoBoricue.png',
             productoId: product.id,
             productoNombre: product.nombre,
-            productoImagen: product.imagen || '/LogoBoricue.png',
+            url_archivo: product.imagen || null,
             productoCategoria: product.categoria,
             productoPrecio: product.precio,
         }

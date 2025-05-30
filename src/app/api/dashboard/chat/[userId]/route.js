@@ -12,6 +12,7 @@ const getHandler = async (req, contextPromise) => {
         }
 
         const chats = await obtenerChats(userId);
+        console.log("📂 Chats obtenidos:", chats);
 
         return successResponse("✅ Chats encontrados", chats);
     } catch (error) {
