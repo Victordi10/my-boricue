@@ -13,9 +13,13 @@ const Chat = () => {
     const { chatOpen, setChatOpen, userId, chatData, setChatData } = useGlobalState();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [socket, setSocket] = useState(null);
+    //guardo todos los chats del usuario
     const [chats, setChats] = useState([]);
+    //guardo todos los mensajes del chat seleccionado
     const [messages, setMessages] = useState([]);
+    //guardo el id del contacto seleccionado
     const [selectedReceiverId, setSelectedReceiverId] = useState(chatData?.idContacto || null);
+    //busco el chat seleccionado en la lista de chats o uso el chatData que del producto
     const selectedChat = chats.find(chat => chat.idContacto === selectedReceiverId) || chatData;
     const [loading, setLoading] = useState(true);
 
@@ -77,10 +81,7 @@ const Chat = () => {
 
         console.log("Socket conectado:", socket.connected);
 
-        const receiverId =
-            selectedChat.idEmisor === userId
-                ? selectedChat.idContacto
-                : selectedChat.idEmisor;
+        const receiverId = selectedChat.idContacto;
 
         const message = {
             idEmisor: userId,
@@ -96,16 +97,19 @@ const Chat = () => {
         setChats((prevChats) => {
             const receiverIdInt = parseInt(receiverId);
 
-            const chatYaExiste = prevChats.some(
-                (chat) => parseInt(chat.idContacto) === receiverIdInt
-            );
+            const chatYaExiste = prevChats.some((chat) => {
+                const existe = parseInt(chat.idContacto) === receiverIdInt;
+                console.log("Comparando:", chat.idContacto, "==", receiverIdInt, "->", existe);
+                return existe;
+            });
 
             if (chatYaExiste) {
                 // No hacer nada si ya está el contacto en la lista
                 return prevChats;
             }
+            console.log("Nuevo chat creado:", receiverIdInt);
 
-            /* const nuevoChat = {
+            const nuevoChat = {
                 idContacto: receiverId,
                 nombreContacto: selectedChat.nombreContacto,
                 avatar: selectedChat.avatar,
@@ -114,8 +118,7 @@ const Chat = () => {
                 lastMessageTime: message.fecha,
             };
 
-            return [nuevoChat, ...prevChats]; */
-            return
+            return [nuevoChat, ...prevChats];
         });
     };
 

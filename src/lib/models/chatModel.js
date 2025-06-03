@@ -11,6 +11,7 @@ export const obtenerChats = async (usuarioId) => {
         sub.idContacto,
         sub.nombreContacto,
         sub.avatar,
+        c.idEmisor AS idEmisor,
         c.mensaje AS lastMessage,
         c.url_archivo AS lastFile,
         c.fecha AS lastMessageTime
